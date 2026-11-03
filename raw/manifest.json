@@ -1,0 +1,11 @@
+{
+  "source": "Git LFS mirror of the 4TU file (https://github.com/Gength/generalization_analysis.git), counts verified",
+  "file_md5": "a4498277f7ec7d1947f572a0bd25a987",
+  "title": "BPI Challenge 2019",
+  "license": "CC BY 4.0",
+  "file": "BPI_Challenge_2019.xes.gz",
+  "events": 1595923,
+  "cases": 251734,
+  "parquet_sha256": "12cb6ac7bfe377875451010f44605d9d63e9c6030504e69d9ff76dd7afa7b3a2",
+  "fetched_at": "2026-11-03T19:29:32+00:00"
+}
