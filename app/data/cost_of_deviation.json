@@ -1,0 +1,29 @@
+{
+  "population_items": 185010,
+  "cohort_days": 293,
+  "annualisation_factor": 1.2457337883959045,
+  "deviating_items_share": 0.2257229338954651,
+  "deviating_value_share": 0.3850724236180231,
+  "rework_items_per_year": 49270.01706484642,
+  "rework_items_share": 0.2137776336414248,
+  "excess_touches_per_year": 84528.22861675371,
+  "excess_item_days_per_year": 845611.0548312477,
+  "excess_days_per_rework_item": 17.162792002249606,
+  "cost_of_rework_eur_low": 422641.14308376855,
+  "cost_of_rework_eur_base": 1267923.4292513058,
+  "cost_of_rework_eur_high": 2535846.8585026115,
+  "control_gap_items_per_year": 3921.5699658703074,
+  "control_gap_exposure_eur_per_year": 21439645.307167236,
+  "top3_interventions": [
+    "Clean price data and invoice tolerances (contracts, info records)",
+    "First-time-right goods receipt and invoice entry",
+    "Order the right quantity: delivery tolerances and PO changes before receipt"
+  ],
+  "top3_effort_shares": [
+    0.5099131754458961,
+    0.4003466909889838,
+    0.08974013356512008
+  ],
+  "r2_touches": 0.2031266030912755,
+  "r2_cycle_days": 0.36230946630117067
+}

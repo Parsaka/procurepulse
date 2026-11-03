@@ -1,0 +1,91 @@
+{
+  "horizon_days": 90,
+  "trees_last_refit": 17,
+  "trees_static": 55,
+  "train_items": 90602,
+  "test_items": 52471,
+  "train_positive_rate": 0.14331913202799054,
+  "test_positive_rate": 0.1607745230698862,
+  "train_window": [
+    "2018-01-01",
+    "2018-05-03"
+  ],
+  "test_window_start": "2018-08-01",
+  "metrics": [
+    {
+      "model": "Baseline: category prevalence",
+      "pr_auc": 0.16824426095012027,
+      "roc_auc": 0.5263879832752977,
+      "brier": 0.13423558646381628,
+      "precision_at_10pct": 0.17381360777587193,
+      "recall_at_10pct": 0.10810810810810811,
+      "lift_at_10pct": 1.08110168487527
+    },
+    {
+      "model": "Baseline: logistic regression",
+      "pr_auc": 0.1911119842249797,
+      "roc_auc": 0.558929164712991,
+      "brier": 0.1368842199608605,
+      "precision_at_10pct": 0.20850009529254812,
+      "recall_at_10pct": 0.1296823138928402,
+      "lift_at_10pct": 1.2968478544446769
+    },
+    {
+      "model": "LightGBM, trained once",
+      "pr_auc": 0.23678395219398057,
+      "roc_auc": 0.5849098439573719,
+      "brier": 0.13393805384236693,
+      "precision_at_10pct": 0.2807318467695826,
+      "recall_at_10pct": 0.17460881934566144,
+      "lift_at_10pct": 1.746121471295255
+    },
+    {
+      "model": "LightGBM, monthly refit",
+      "pr_auc": 0.22962208778389054,
+      "roc_auc": 0.5818465545021275,
+      "brier": 0.13335858207369242,
+      "precision_at_10pct": 0.30646083476272157,
+      "recall_at_10pct": 0.1906116642958748,
+      "lift_at_10pct": 1.9061529707011338
+    }
+  ],
+  "concentration": {
+    "vendors": 1803,
+    "top5pct_vendors": 90,
+    "top5pct_share_of_rework_items": 0.8143437162976591
+  },
+  "top_drivers": [
+    {
+      "feature": "hist_rate_vendor_id",
+      "share": 0.5344912153214435
+    },
+    {
+      "feature": "hist_rate_created_by",
+      "share": 0.15311998996641077
+    },
+    {
+      "feature": "items_in_po",
+      "share": 0.07016715389067664
+    },
+    {
+      "feature": "sub_spend_area",
+      "share": 0.06808075579682919
+    },
+    {
+      "feature": "hist_items_created_by",
+      "share": 0.03748337453373186
+    },
+    {
+      "feature": "item_type",
+      "share": 0.03546303815913552
+    },
+    {
+      "feature": "hist_items_vendor_id",
+      "share": 0.031023325134903586
+    },
+    {
+      "feature": "log_value",
+      "share": 0.02536197320649269
+    }
+  ]
+}
