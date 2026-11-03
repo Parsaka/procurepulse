@@ -134,14 +134,14 @@ with tab_conf:
                  color_discrete_sequence=[GRAY, BLUE], text_auto=".0%",
                  hover_data={"po_items": ":,"}, labels={"rate": "", "item_category": ""})
     fig.update_xaxes(tickformat=".0%", range=[0, 1.08])
-    st.plotly_chart(style(fig, 320), use_container_width=True)
+    st.plotly_chart(style(fig, 320), width="stretch")
     st.markdown("Every case fits structurally in almost all categories; what breaks conformance is "
                 "**rework inside the right structure**: blocked invoices, changed prices and reversals.")
 
     dev = load("deviation_summary")
     st.markdown("#### Deviation rules (mature cohort: items observed for at least 90 days)")
     st.dataframe(dev[["deviation_label", "applies_to", "po_items", "share_of_items", "share_of_value"]],
-                 hide_index=True, use_container_width=True,
+                 hide_index=True, width="stretch",
                  column_config={"deviation_label": "Deviation", "applies_to": "Checked on",
                                 "po_items": st.column_config.NumberColumn("PO items", format="%d"),
                                 "share_of_items": st.column_config.ProgressColumn("Share of items", format="percent", max_value=0.25),
@@ -153,14 +153,14 @@ with tab_conf:
     st.markdown("#### Reference models (target process per item category)")
     imgs = sorted(IMG.glob("reference_*.png"))
     for col, p in zip(st.columns(2) * 2, imgs, strict=False):
-        col.image(str(p), caption=p.stem.replace("reference_", "").replace("_", " "), use_container_width=True)
+        col.image(str(p), caption=p.stem.replace("reference_", "").replace("_", " "), width="stretch")
 
     st.markdown("#### Most frequent variants")
     var = load("process_variants")
     cat = st.selectbox("Item category", sorted(var.item_category.unique()), index=2, key="var_cat")
     v = var[var.item_category == cat].head(10)
     st.dataframe(v[["variant", "po_items", "deviation_rate", "median_cycle_days", "avg_manual_touches"]],
-                 hide_index=True, use_container_width=True,
+                 hide_index=True, width="stretch",
                  column_config={"variant": st.column_config.TextColumn("Variant (activity sequence)", width="large"),
                                 "deviation_rate": st.column_config.NumberColumn("Deviation rate", format="percent"),
                                 "median_cycle_days": st.column_config.NumberColumn("Median days", format="%.0f"),
@@ -172,7 +172,7 @@ with tab_conf:
     fig = px.bar(h.iloc[::-1], x="total_wait_days", y="step", orientation="h", color_discrete_sequence=[BLUE],
                  hover_data={"transitions": ":,", "median_wait_days": ":.1f", "p90_wait_days": ":.1f"},
                  labels={"total_wait_days": "Total waiting time (item-days)", "step": ""})
-    st.plotly_chart(style(fig, 340), use_container_width=True)
+    st.plotly_chart(style(fig, 340), width="stretch")
 
 # ---------------------------------------------------------------- 3. cost
 with tab_cost:
@@ -194,7 +194,7 @@ with tab_cost:
         hovertemplate="%{y}<br>excess %{x:.2f} (95%% CI shown)<br>items %{customdata[0]:,}"
                       "<br>CEM estimate %{customdata[1]:.2f}<br>p = %{customdata[2]:.3f}<extra></extra>"))
     fig.add_vline(x=0, line_color="#52514e", line_width=1)
-    st.plotly_chart(style(fig, 330), use_container_width=True)
+    st.plotly_chart(style(fig, 330), width="stretch")
     st.markdown("**Reading it:** reversals and price changes after the invoice are the most expensive "
                 "events per item; payment blocks are cheap per item but happen on 17% of items, which "
                 "makes them the largest cost in total. Paying before goods receipt and creating the PO after "
@@ -212,7 +212,7 @@ with tab_ew:
                f"whose {ew['horizon_days']}-day outcome is already known that day, so nothing from the future leaks in; "
                "vendor and creator track records are computed the same way.")
     mm = load("model_metrics")
-    st.dataframe(mm, hide_index=True, use_container_width=True,
+    st.dataframe(mm, hide_index=True, width="stretch",
                  column_config={"model": "Model", "pr_auc": st.column_config.NumberColumn("PR-AUC", format="%.3f"),
                                 "roc_auc": st.column_config.NumberColumn("ROC-AUC", format="%.3f"),
                                 "brier": st.column_config.NumberColumn("Brier", format="%.3f"),
@@ -235,7 +235,7 @@ with tab_ew:
     fig.update_yaxes(tickformat=".0%")
     fig.update_xaxes(title="Risk decile (10 = highest)", dtick=1)
     fig.update_layout(title="Calibration on the test period", legend=dict(orientation="h", y=-0.25))
-    a.plotly_chart(style(fig, 360), use_container_width=True)
+    a.plotly_chart(style(fig, 360), width="stretch")
     drv = load("risk_drivers").head(8).iloc[::-1]
     names = {"hist_rate_vendor_id": "Vendor's rework track record", "hist_rate_created_by": "Creator's rework track record",
              "items_in_po": "Items in the PO", "sub_spend_area": "Sub spend area", "item_type": "Item type",
@@ -246,10 +246,10 @@ with tab_ew:
                  color_discrete_sequence=[BLUE], labels={"share": "Share of mean |SHAP|", "y": ""},
                  title="What drives the risk score (SHAP)")
     fig.update_xaxes(tickformat=".0%")
-    b.plotly_chart(style(fig, 360), use_container_width=True)
+    b.plotly_chart(style(fig, 360), width="stretch")
     st.markdown("#### Review queue: top-decile items in the test period")
     al = load("early_warning_alerts")
-    st.dataframe(al.head(200), hide_index=True, use_container_width=True,
+    st.dataframe(al.head(200), hide_index=True, width="stretch",
                  column_config={"risk_score": st.column_config.ProgressColumn("Risk", format="%.2f", min_value=0, max_value=1),
                                 "net_value_eur": st.column_config.NumberColumn("Value (EUR)", format="%,.0f"),
                                 "top_reason": "Main reason"})
@@ -266,7 +266,7 @@ with tab_vendor:
     fig.update_yaxes(tickformat=".0%", range=[0, 1.02])
     fig.add_annotation(x=0.05, y=conc.cum_share.iloc[n5 - 1], text=f"5% of vendors → {conc.cum_share.iloc[n5 - 1]:.0%}",
                        showarrow=True, arrowhead=0, ax=60, ay=30)
-    st.plotly_chart(style(fig, 340), use_container_width=True)
+    st.plotly_chart(style(fig, 340), width="stretch")
     sc = load("vendor_scorecard")
     st.markdown("#### Control chart: monthly rework rate of the 10 vendors with the most rework")
     vm = load("vendor_monthly_rework")
@@ -280,7 +280,7 @@ with tab_vendor:
     fig.add_hline(y=centre, line_dash="dot", line_color=GRAY, annotation_text=f"average {centre:.0%}",
                   annotation_position="top left")
     fig.update_yaxes(tickformat=".0%", range=[0, 1.02])
-    st.plotly_chart(style(fig, 320), use_container_width=True)
+    st.plotly_chart(style(fig, 320), width="stretch")
     st.caption("Vendor 0000100105 is the clearest case: its rework rate jumps from under 10% to about 90% in "
                "June-July 2018 and stays high through November (December is too recent: its rework has not happened yet). "
                "A monthly KPI alert on this chart would have caught "
@@ -288,7 +288,7 @@ with tab_vendor:
     st.markdown("#### Vendor scorecard (vendors with at least 50 PO items)")
     st.dataframe(sc.head(100)[["deviation_volume_rank", "vendor_name", "vendor_size_band", "po_items", "po_value_eur",
                                "deviation_rate", "payment_block_rate", "avg_rework_touches", "median_cycle_days"]],
-                 hide_index=True, use_container_width=True,
+                 hide_index=True, width="stretch",
                  column_config={"deviation_volume_rank": "Rank", "vendor_name": "Vendor (anonymised)",
                                 "vendor_size_band": "Size", "po_value_eur": st.column_config.NumberColumn("PO value", format="€%,.0f"),
                                 "deviation_rate": st.column_config.NumberColumn("Deviation rate", format="percent"),
@@ -313,7 +313,7 @@ with tab_trend:
     if choice.endswith("rate"):
         fig.update_yaxes(tickformat=".0%")
     fig.update_layout(legend=dict(orientation="h", y=-0.2))
-    st.plotly_chart(style(fig, 380), use_container_width=True)
+    st.plotly_chart(style(fig, 380), width="stretch")
     st.caption("Months near the end of the window have fewer closed items, so cycle-time KPIs there are "
                "right-censored; the cost model uses only the mature cohort (90 days observed).")
-    st.dataframe(k, hide_index=True, use_container_width=True)
+    st.dataframe(k, hide_index=True, width="stretch")
