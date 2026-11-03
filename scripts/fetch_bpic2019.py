@@ -17,7 +17,7 @@ import sys
 import urllib.request
 import xml.etree.ElementTree as ET
 import zipfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pyarrow as pa
@@ -176,7 +176,7 @@ def main() -> None:
         "events": n_events,
         "cases": len(cases),
         "parquet_sha256": hashlib.sha256(pq_path.read_bytes()).hexdigest(),
-        "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "fetched_at": datetime.now(UTC).isoformat(timespec="seconds"),
     }
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2))
     print(json.dumps(manifest, indent=2))

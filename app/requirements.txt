@@ -1,0 +1,5 @@
+# Streamlit Community Cloud installs only these: the app reads exported Parquet, no warehouse needed.
+streamlit>=1.40
+pandas>=2.2
+pyarrow>=17
+plotly>=5.24

@@ -1,0 +1,92 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: ruff check .
+      - run: python -m pytest -q
+
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+      - run: terraform -chdir=infra/snowflake fmt -check
+      - run: terraform -chdir=infra/snowflake init -backend=false -input=false
+      - run: terraform -chdir=infra/snowflake validate
+
+  pipeline:
+    # Rebuilds everything from the raw log: SAP extract -> dbt (build + tests) -> analytics -> ML
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: sudo apt-get update && sudo apt-get install -y graphviz
+      - run: pip install -r requirements.txt -r requirements-snowflake.txt
+      - name: Raw event log from the `data` branch
+        run: make data
+      - name: SAP extract simulation
+        run: make extract
+      - name: dbt build on DuckDB (models + tests, incl. lossless reconstruction)
+        run: make dbt
+      - name: dbt compiles for Snowflake (no connection needed)
+        env:
+          SNOWFLAKE_ACCOUNT: ci-placeholder
+          SNOWFLAKE_USER: ci
+          SNOWFLAKE_PRIVATE_KEY: none
+        run: cd dbt && DBT_PROFILES_DIR=. dbt compile --target snowflake --no-populate-cache
+      - name: Analytics (RQ1, RQ2, RQ5)
+        run: make analytics
+      - name: Early-warning model (RQ3, RQ4)
+        run: make ml
+      - name: Exports
+        run: make exports
+      - name: Results drift check
+        run: |
+          python - <<'PY'
+          import json
+          c = json.load(open("data/analytics/cost_of_deviation.json"))
+          e = json.load(open("data/analytics/early_warning.json"))
+          k = json.load(open("data/analytics/conformance_overall.json"))
+          print(json.dumps({"rework_items_per_year": round(c["rework_items_per_year"]),
+                            "cost_base_eur": round(c["cost_of_rework_eur_base"]),
+                            "fully_conforming": round(k["fully_conforming_rate"], 4),
+                            "lift_monthly_refit": round(e["metrics"][-1]["lift_at_10pct"], 3)}, indent=2))
+          assert 0.70 < k["fully_conforming_rate"] < 0.85
+          assert 1.0e6 < c["cost_of_rework_eur_base"] < 1.6e6
+          assert e["metrics"][-1]["lift_at_10pct"] > e["metrics"][1]["lift_at_10pct"]  # beats logistic baseline
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: results
+          path: |
+            data/analytics/*.json
+            data/analytics/*.parquet
+            app/data/
+            docs/img/
+          retention-days: 14

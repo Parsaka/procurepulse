@@ -15,7 +15,10 @@ would be known on the day of deployment.
 
 Validation is strictly temporal with a gap that mimics deployment: train on items created
 2018-01-01..2018-05-02 (their 90-day labels are known by 2018-07-31), score items created
-from 2018-08-01. Baselines: category prevalence and a logistic regression.
+from 2018-08-01. Two designs are compared on that test period: a model trained once, and the
+deployed design, which is refitted at the start of every month on all items whose label is
+already known that day (an expanding window; nothing from the future is used). Baselines:
+category prevalence and a logistic regression.
 """
 from __future__ import annotations
 
@@ -25,9 +28,9 @@ import lightgbm as lgb
 import numpy as np
 import pandas as pd
 import shap
-from sklearn.model_selection import GroupKFold
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import average_precision_score, brier_score_loss, roc_auc_score
+from sklearn.model_selection import GroupKFold
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import OneHotEncoder
 
@@ -111,11 +114,14 @@ def evaluate(name, y, p):
             "brier": float(brier_score_loss(y, p)), **top_k_metrics(y, p)}
 
 
-def main() -> None:
-    con = connect()
-    df = con.execute(QUERY).fetchdf()
-    train = df[df.po_created_at < TRAIN_END].reset_index(drop=True)
-    test = df[df.po_created_at >= TEST_START].reset_index(drop=True)
+PARAMS = dict(objective="binary", learning_rate=0.03, num_leaves=15, min_child_samples=300,
+              feature_fraction=0.8, bagging_fraction=0.8, bagging_freq=1, lambda_l2=5.0,
+              cat_smooth=50, min_data_per_group=200, n_estimators=2000, random_state=SEED, verbose=-1)
+
+
+def fit_predict(train: pd.DataFrame, test: pd.DataFrame):
+    """Fit encodings + LightGBM on `train` only and score `test`. Returns (scores, model, test_frame, features, trees)."""
+    train, test = train.copy(), test.copy()
     hist_feats = []
     for key in HISTORY_KEYS:
         (tr_rate, tr_cnt), (te_rate, te_cnt) = target_encode(train, test, key)
@@ -128,6 +134,24 @@ def main() -> None:
         train[c] = train[c].astype(str).astype(cats)
         test[c] = test[c].astype(str).where(test[c].astype(str).isin(known), "(unseen)").astype(cats)
     features = CATEGORICAL + NUMERIC + hist_feats
+    y_tr = train["label"].to_numpy()
+    # early stopping on the last 30 days of the training window (temporal validation), then refit
+    val_mask = (train.po_created_at >= train.po_created_at.max() - pd.Timedelta(days=30)).to_numpy()
+    model = lgb.LGBMClassifier(**PARAMS)
+    model.fit(train.loc[~val_mask, features], y_tr[~val_mask], categorical_feature=CATEGORICAL,
+              eval_set=[(train.loc[val_mask, features], y_tr[val_mask])], eval_metric="average_precision",
+              callbacks=[lgb.early_stopping(100, verbose=False)])
+    trees = max(1, model.best_iteration_ or 1)
+    model = lgb.LGBMClassifier(**{**PARAMS, "n_estimators": trees})
+    model.fit(train[features], y_tr, categorical_feature=CATEGORICAL)
+    return model.predict_proba(test[features])[:, 1], model, test, features, trees
+
+
+def main() -> None:
+    con = connect()
+    df = con.execute(QUERY).fetchdf()
+    train = df[df.po_created_at < TRAIN_END].reset_index(drop=True)
+    test = df[df.po_created_at >= TEST_START].reset_index(drop=True)
     y_tr, y_te = train["label"].to_numpy(), test["label"].to_numpy()
 
     results = []
@@ -142,49 +166,50 @@ def main() -> None:
     logit.fit(train[simple].astype(str), y_tr)
     results.append(evaluate("Baseline: logistic regression", y_te, logit.predict_proba(test[simple].astype(str))[:, 1]))
 
-    # Main model
-    # Early stopping on the last month of the training window (temporal validation)
-    params = dict(objective="binary", learning_rate=0.03, num_leaves=15, min_child_samples=300,
-                  feature_fraction=0.8, bagging_fraction=0.8, bagging_freq=1, lambda_l2=5.0,
-                  cat_smooth=50, min_data_per_group=200, n_estimators=2000, random_state=SEED, verbose=-1)
-    val_mask = train.po_created_at >= pd.Timestamp(TRAIN_END) - pd.Timedelta(days=30)
-    model = lgb.LGBMClassifier(**params)
-    model.fit(train.loc[~val_mask, features], y_tr[~val_mask], categorical_feature=CATEGORICAL,
-              eval_set=[(train.loc[val_mask, features], y_tr[val_mask])], eval_metric="average_precision",
-              callbacks=[lgb.early_stopping(100, verbose=False)])
-    best_iter = model.best_iteration_
-    # refit on the full training window with the chosen number of trees
-    model = lgb.LGBMClassifier(**{**params, "n_estimators": best_iter})
-    model.fit(train[features], y_tr, categorical_feature=CATEGORICAL)
-    p_te = model.predict_proba(test[features])[:, 1]
-    results.append(evaluate("LightGBM early warning", y_te, p_te))
+    # Model A: trained once on the first window (shows what drift does to a frozen model)
+    p_static, _, _, _, static_trees = fit_predict(train, test)
+    results.append(evaluate("LightGBM, trained once", y_te, p_static))
+
+    # Model B (deployed design): refit at the start of every month on all items whose
+    # 90-day label is already known on that day, then score that month's new POs.
+    parts, abs_shap, model, features, best_iter = [], [], None, None, None
+    for month_start in pd.date_range(TEST_START, test.po_created_at.max(), freq="MS"):
+        known_until = month_start - pd.Timedelta(days=HORIZON_DAYS)
+        month = test[(test.po_created_at >= month_start)
+                     & (test.po_created_at < month_start + pd.offsets.MonthBegin(1))]
+        if month.empty:
+            continue
+        p, model, scored, features, best_iter = fit_predict(df[df.po_created_at < known_until], month)
+        # explain with the model that actually scored the month (RQ3 drivers + top reason per alert)
+        sv = shap.TreeExplainer(model).shap_values(scored[features])
+        sv = sv[1] if isinstance(sv, list) else sv
+        abs_shap.append(pd.DataFrame(np.abs(sv), columns=features))
+        parts.append(scored[["case_key", "po_created_at", "item_category", "vendor_id", "spend_area",
+                             "net_value_eur", "label"]].assign(
+            risk_score=p, model_month=month_start.strftime("%Y-%m"),
+            top_reason=np.array(features)[np.argmax(sv, axis=1)]))
+    test = pd.concat(parts).sort_values(["po_created_at", "case_key"]).reset_index(drop=True)
+    p_te, y_te = test["risk_score"].to_numpy(), test["label"].to_numpy()
+    results.append(evaluate("LightGBM, monthly refit", y_te, p_te))
     metrics = pd.DataFrame(results)
     publish(con, "model_metrics", metrics)
 
     # Calibration table (deciles of predicted risk)
-    test["risk_score"] = p_te
     test["risk_decile"] = pd.qcut(test["risk_score"].rank(method="first"), 10, labels=False) + 1
     calib = (test.groupby("risk_decile").agg(items=("label", "size"), predicted=("risk_score", "mean"),
                                               observed=("label", "mean")).reset_index())
     publish(con, "model_calibration", calib)
 
-    # Drivers (RQ3): mean |SHAP| on a test sample, grouped back to the business feature
-    sample = test.sample(min(8000, len(test)), random_state=SEED)
-    sv = shap.TreeExplainer(model).shap_values(sample[features])
-    sv = sv[1] if isinstance(sv, list) else sv
-    imp = pd.DataFrame({"feature": features, "mean_abs_shap": np.abs(sv).mean(axis=0)})
+    # Drivers (RQ3): mean |SHAP| over every scored test item, per business feature
+    imp = pd.concat(abs_shap).mean().rename("mean_abs_shap").rename_axis("feature").reset_index()
     imp["share"] = imp["mean_abs_shap"] / imp["mean_abs_shap"].sum()
     imp = imp.sort_values("mean_abs_shap", ascending=False)
     publish(con, "risk_drivers", imp)
 
-    # Top reason per scored item (largest positive SHAP contribution) for the alert list
-    full_sv = shap.TreeExplainer(model).shap_values(test[features])
-    full_sv = full_sv[1] if isinstance(full_sv, list) else full_sv
-    test["top_reason"] = np.array(features)[np.argmax(full_sv, axis=1)]
     alerts = test.loc[test["risk_decile"] == 10, ["case_key", "po_created_at", "item_category", "vendor_id",
                                                   "spend_area", "net_value_eur", "risk_score", "top_reason", "label"]]
-    publish(con, "early_warning_scores", test[["case_key", "po_created_at", "risk_score", "risk_decile",
-                                               "top_reason", "label"]])
+    publish(con, "early_warning_scores", test[["case_key", "po_created_at", "model_month", "risk_score",
+                                               "risk_decile", "top_reason", "label"]])
     publish(con, "early_warning_alerts", alerts.sort_values("risk_score", ascending=False))
 
     # Concentration (RQ3): how much of the rework comes from few vendors?
@@ -195,7 +220,7 @@ def main() -> None:
 
     model.booster_.save_model(str(OUT_DIR / "early_warning_lgbm.txt"))
     summary = {
-        "horizon_days": HORIZON_DAYS, "trees": int(best_iter), "train_items": int(len(train)), "test_items": int(len(test)),
+        "horizon_days": HORIZON_DAYS, "trees_last_refit": int(best_iter), "trees_static": int(static_trees), "train_items": int(len(train)), "test_items": int(len(test)),
         "train_positive_rate": float(y_tr.mean()), "test_positive_rate": float(y_te.mean()),
         "train_window": ["2018-01-01", TRAIN_END], "test_window_start": TEST_START,
         "metrics": results, "concentration": concentration,

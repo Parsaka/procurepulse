@@ -11,13 +11,14 @@ Output: one Parquet folder per SAP table under <out>/<TABLE>/, partitioned by
 extraction month (load_month=YYYY-MM), like monthly delta loads from an
 extractor. Master data (LFA1, T001, T023T) is a full load.
 
-Every event lands in exactly one table row. The audit file
-<out>/_AUDIT_EVENT_COUNTS.parquet holds per-activity counts of the source log
-so dbt can prove that the reconstruction is lossless.
+Every event lands in exactly one table row. The audit tables ZZ_AUDIT_EVENT_COUNTS
+(per-activity counts of the source log) and ZZ_AUDIT_CASE_LABELS (the source's item
+category per case) let dbt prove that the reconstruction is lossless.
 
 Simplifications (documented in docs/sap_data_model.md):
-  * EKBE holds goods-receipt history only (VGABE '1'); invoices live in RBKP/RSEG.
-  * Invoice payment blocks are change documents keyed by PO item, not by invoice.
+  * EKBE holds goods-receipt history only (VGABE '1'); invoices live in RBKP, which
+    also carries the PO item reference that RSEG would hold (ZZ_EBELN, ZZ_EBELP).
+  * Invoice payment blocks are change documents on RBKP-ZLSPR keyed by PO item, not by invoice.
   * Vendor-side events (vendor creates invoice / debit memo) arrive as inbound
     IDocs (EDIDC, message type INVOIC), as with EDI vendors.
 """
@@ -296,7 +297,7 @@ def sap_tables(con: duckdb.DuckDBPyConnection) -> dict[str, str]:
                    ebeln as EBELN, ebelp as EBELP, seq as ZZ_EVENT_SEQ,
                    dats as ERDAT, tims as ERZET, usnam as ERNAM, net_worth as NETWR, load_month
             from e where activity = 'Record Service Entry Sheet'""",
-        # RBKP + RSEG: logistics invoice verification (header and PO-item line)
+        # RBKP: logistics invoice verification (header, with the RSEG PO-item reference folded in)
         "RBKP": f"""
             select '51' || lpad(cast(row_number() over (order by ts, case_id, seq) as varchar), 8, '0') as BELNR,
                    gjahr as GJAHR, case activity {inv_vgart} end as VGART,
@@ -411,11 +412,11 @@ def main() -> None:
         target = out / name
         if part:
             con.execute(
-                f"copy {name} to '{target.as_posix()}' (format parquet, partition_by (load_month), compression zstd)"
+                f"copy {name} to '{target.as_posix()}' (format parquet, partition_by (load_month), compression snappy)"
             )
         else:
             target.mkdir()
-            con.execute(f"copy {name} to '{(target / 'full.parquet').as_posix()}' (format parquet, compression zstd)")
+            con.execute(f"copy {name} to '{(target / 'full.parquet').as_posix()}' (format parquet, compression snappy)")
         summary[name] = n
 
     # Audit tables: facts about the source log, used only by dbt reconciliation tests

@@ -1,0 +1,105 @@
+// ProcurePulse - Power BI measures
+// Paste into a "Measures" table (Modeling > New table: Measures = {BLANK()}), one measure per block.
+// Every measure mirrors a dbt KPI in dbt/models/marts/ or a number in docs/findings.md,
+// so the report and the warehouse never disagree.
+
+// ---------- Volume ----------
+PO Items = COUNTROWS ( fct_po_item )
+
+PO Value EUR = SUM ( fct_po_item[net_value_eur] )
+
+// ---------- Conformance (mart_p2p_monthly_kpis) ----------
+Conformance Rate =
+DIVIDE (
+    CALCULATE ( [PO Items], fct_po_item[has_deviation] = FALSE () ),
+    [PO Items]
+)
+
+Deviating Value Share =
+DIVIDE (
+    CALCULATE ( [PO Value EUR], fct_po_item[has_deviation] = TRUE () ),
+    [PO Value EUR]
+)
+
+First Time Right Rate =
+DIVIDE (
+    CALCULATE ( [PO Items], fct_po_item[n_manual_rework_touches] = 0 ),
+    [PO Items]
+)
+
+Rework Items =
+CALCULATE (
+    [PO Items],
+    FILTER (
+        fct_po_item,
+        fct_po_item[dev_price_change_after_invoice] || fct_po_item[dev_quantity_change_after_gr]
+            || fct_po_item[dev_payment_block] || fct_po_item[dev_reversal]
+    )
+)
+
+Rework Rate = DIVIDE ( [Rework Items], [PO Items] )
+
+PO After Invoice Rate =
+DIVIDE ( CALCULATE ( [PO Items], fct_po_item[dev_po_after_invoice] = TRUE () ), [PO Items] )
+
+Payment Block Rate =
+DIVIDE ( CALCULATE ( [PO Items], fct_po_item[dev_payment_block] = TRUE () ), [PO Items] )
+
+// ---------- Effort and speed ----------
+Manual Touches = SUM ( fct_po_item[n_manual_touches] )
+
+Manual Touches per Item = DIVIDE ( [Manual Touches], [PO Items] )
+
+Automation Rate =
+DIVIDE ( SUM ( fct_po_item[n_batch_events] ), SUM ( fct_po_item[n_events] ) )
+
+Median Cycle Days =
+CALCULATE (
+    MEDIAN ( fct_po_item[cycle_days] ),
+    fct_po_item[is_closed] = TRUE ()
+)
+
+Median Invoice to Clear Days = MEDIAN ( fct_po_item[invoice_to_clear_days] )
+
+Closed Rate = DIVIDE ( CALCULATE ( [PO Items], fct_po_item[is_closed] = TRUE () ), [PO Items] )
+
+// ---------- Cost of rework (docs/cost_model.md) ----------
+// What-if parameter: Modeling > New parameter > Numeric range, name "Touch Cost",
+// 5 to 30, increment 1, default 15. Power BI creates 'Touch Cost'[Touch Cost Value].
+Excess Touches per Year = SUM ( intervention_value[touches_saved_per_year] )
+
+Cost of Rework EUR per Year =
+CALCULATE (
+    [Excess Touches per Year],
+    intervention_value[family] = "rework"
+) * SELECTEDVALUE ( 'Touch Cost'[Touch Cost Value], 15 )
+
+Intervention Value EUR per Year =
+SUM ( intervention_value[touches_saved_per_year] )
+    * SELECTEDVALUE ( 'Touch Cost'[Touch Cost Value], 15 )
+
+Control Gap Exposure EUR per Year =
+CALCULATE (
+    SUM ( intervention_value[exposed_value_eur_per_year] ),
+    intervention_value[family] = "control"
+)
+
+// ---------- Early warning (analytics.early_warning_scores) ----------
+Scored Items = COUNTROWS ( early_warning_scores )
+
+Observed Rework Rate (Scored) = AVERAGE ( early_warning_scores[label] )
+
+Top Decile Lift =
+DIVIDE (
+    CALCULATE ( AVERAGE ( early_warning_scores[label] ), early_warning_scores[risk_decile] = 10 ),
+    CALCULATE ( AVERAGE ( early_warning_scores[label] ), REMOVEFILTERS ( early_warning_scores[risk_decile] ) )
+)
+
+// ---------- Vendors ----------
+Vendor Rank by Rework =
+IF (
+    HASONEVALUE ( dim_vendor[vendor_id] ),
+    RANKX ( ALL ( dim_vendor[vendor_id] ), [Rework Items], , DESC, DENSE )
+)
+
+Share of Rework Items = DIVIDE ( [Rework Items], CALCULATE ( [Rework Items], ALL ( dim_vendor ) ) )

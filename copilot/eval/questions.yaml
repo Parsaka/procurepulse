@@ -1,0 +1,133 @@
+# Process Copilot evaluation set.
+# Each question has a ground-truth SQL that returns ONE number; the copilot's submitted
+# `value` must match it within `tol` (relative) or `abs_tol`. Shares are fractions.
+# Categories: lookup (single KPI), filter (KPI on a slice), rank (top-N entity),
+# compare (two slices), method (results of the analytics layer).
+- id: q01
+  category: lookup
+  question: How many purchase order items are in scope?
+  sql: select count(*) from marts.fct_po_item where is_in_scope
+- id: q02
+  category: lookup
+  question: What is the total net value of all in-scope PO items in EUR?
+  sql: select sum(net_value_eur) from marts.fct_po_item where is_in_scope
+- id: q03
+  category: lookup
+  question: What share of in-scope PO items has at least one deviation?
+  sql: select avg(has_deviation::int) from marts.fct_po_item where is_in_scope
+- id: q04
+  category: lookup
+  question: What share of in-scope PO value sits on items with a deviation?
+  sql: select sum(net_value_eur) filter (where has_deviation) / sum(net_value_eur) from marts.fct_po_item where is_in_scope
+- id: q05
+  category: lookup
+  question: How many in-scope PO items had an invoice blocked for payment because of a variance?
+  sql: select count(*) from marts.fct_po_item where is_in_scope and dev_payment_block
+- id: q06
+  category: lookup
+  question: What is the first-time-right rate of in-scope PO items?
+  sql: select avg(case when n_manual_rework_touches = 0 then 1.0 else 0 end) from marts.fct_po_item where is_in_scope
+- id: q07
+  category: lookup
+  question: What share of all events in scope were executed by batch users?
+  sql: select sum(n_batch_events) * 1.0 / sum(n_events) from marts.fct_po_item where is_in_scope
+- id: q08
+  category: lookup
+  question: How many distinct vendors appear on in-scope PO items?
+  sql: select count(distinct vendor_id) from marts.fct_po_item where is_in_scope
+- id: q09
+  category: lookup
+  question: What is the median number of days from PO creation to final clearing for closed in-scope items?
+  sql: select median(cycle_days) from marts.fct_po_item where is_in_scope and is_closed
+  tol: 0.02
+- id: q10
+  category: lookup
+  question: How many in-scope PO items had their purchase order created after the vendor's invoice date?
+  sql: select count(*) from marts.fct_po_item where is_in_scope and dev_po_after_invoice
+- id: q11
+  category: filter
+  question: How many in-scope PO items are 3-way match with invoice before goods receipt?
+  sql: select count(*) from marts.fct_po_item where is_in_scope and item_category = '3-way match, invoice before GR'
+- id: q12
+  category: filter
+  question: What is the deviation rate of consignment items in scope?
+  sql: select avg(has_deviation::int) from marts.fct_po_item where is_in_scope and item_category = 'Consignment'
+- id: q13
+  category: filter
+  question: How many in-scope PO items were reversed at least once (goods receipt or invoice cancelled)?
+  sql: select count(*) from marts.fct_po_item where is_in_scope and dev_reversal
+- id: q14
+  category: filter
+  question: What was the average number of manual touches per in-scope PO item created in March 2018?
+  sql: select avg(n_manual_touches) from marts.fct_po_item where is_in_scope and po_created_month = date '2018-03-01'
+- id: q15
+  category: filter
+  question: What share of in-scope PO items in the spend area 'Packaging' had a payment block?
+  sql: select avg(dev_payment_block::int) from marts.fct_po_item where is_in_scope and spend_area = 'Packaging'
+- id: q16
+  category: filter
+  question: How many in-scope PO items have a total net value above 100,000 EUR?
+  sql: select count(*) from marts.fct_po_item where is_in_scope and net_value_eur > 100000
+- id: q17
+  category: rank
+  question: Which vendor id has the most in-scope PO items with a payment block? Give the number of such items.
+  sql: select count(*) from marts.fct_po_item where is_in_scope and dev_payment_block group by vendor_id order by 1 desc limit 1
+- id: q18
+  category: rank
+  question: Which spend area has the highest total in-scope PO value? Give that value in EUR.
+  sql: select sum(net_value_eur) from marts.fct_po_item where is_in_scope group by spend_area order by 1 desc limit 1
+- id: q19
+  category: rank
+  question: Which activity occurs most often in the event log of in-scope items, and how many times?
+  sql: select count(*) from marts.fct_event e join marts.fct_po_item p using (case_key) where p.is_in_scope group by e.activity order by 1 desc limit 1
+- id: q20
+  category: rank
+  question: How many PO items follow the single most frequent process variant?
+  sql: select max(po_items) from marts.mart_process_variants
+- id: q21
+  category: rank
+  question: Which company code has the most in-scope PO items, and how many does it have?
+  sql: select count(*) from marts.fct_po_item where is_in_scope group by company_code order by 1 desc limit 1
+- id: q22
+  category: compare
+  question: By how many percentage points is the deviation rate of 3-way match invoice-after-GR items higher or lower than that of 3-way match invoice-before-GR items? Give the difference (after minus before) as a fraction.
+  sql: |
+    select avg(has_deviation::int) filter (where item_category = '3-way match, invoice after GR')
+         - avg(has_deviation::int) filter (where item_category = '3-way match, invoice before GR')
+    from marts.fct_po_item where is_in_scope
+  abs_tol: 0.002
+- id: q23
+  category: compare
+  question: How many more manual touches does an in-scope item with a reversal have on average than an item without any deviation?
+  sql: |
+    select avg(n_manual_touches) filter (where dev_reversal) - avg(n_manual_touches) filter (where not has_deviation)
+    from marts.fct_po_item where is_in_scope
+- id: q24
+  category: compare
+  question: What share of in-scope PO items created in Q4 2018 were closed (fully cleared) by the end of the log?
+  sql: select avg(is_closed::int) from marts.fct_po_item where is_in_scope and po_created_at >= '2018-10-01' and po_created_at < '2019-01-01'
+- id: q25
+  category: method
+  question: According to the cost model, how many extra manual touches does a reversal cause per affected item?
+  sql: select excess from analytics.deviation_effects where deviation_code = 'dev_reversal' and outcome = 'n_manual_touches'
+  tol: 0.01
+- id: q26
+  category: method
+  question: What is the base-case yearly cost of rework in EUR?
+  sql: select sum(effort_saved_eur_base) from analytics.intervention_value where family = 'rework'
+- id: q27
+  category: method
+  question: Which intervention recovers the largest share of rework effort, and what share is it?
+  sql: select max(share_of_rework_effort) from analytics.intervention_value where family = 'rework'
+- id: q28
+  category: method
+  question: What is the lift at the top 10% of the monthly-refit early-warning model?
+  sql: select lift_at_10pct from analytics.model_metrics where model = 'LightGBM, monthly refit'
+- id: q29
+  category: method
+  question: What share of the mature, closed PO items fit their reference process model in token replay?
+  sql: select avg(is_fit::int) from analytics.case_conformance
+- id: q30
+  category: method
+  question: How much PO value per year is exposed by purchase orders created after the invoice ('no PO, no pay' gap), in EUR?
+  sql: select exposed_value_eur_per_year from analytics.intervention_value where intervention like '%no PO, no pay%'

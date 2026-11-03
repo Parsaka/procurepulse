@@ -7,8 +7,9 @@ sources:
       tables are read straight from the Parquet landing zone; on Snowflake they are RAW
       tables loaded with COPY INTO.
     schema: raw
-    meta:
-      external_location: "read_parquet('{{ env_var('PP_LANDING_PATH', '../data/landing/sap') }}/{name}/**/*.parquet', hive_partitioning = true, union_by_name = true)"
+    config:
+      meta:
+        external_location: "read_parquet('{{ env_var('PP_LANDING_PATH', '../data/landing/sap') }}/{name}/**/*.parquet', hive_partitioning = true, union_by_name = true)"
     tables:
       - name: EKKO
         description: Purchasing document header
