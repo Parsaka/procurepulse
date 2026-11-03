@@ -30,7 +30,7 @@ UA = {"User-Agent": "procurepulse-data-fetch/1.0", "Content-Type": "application/
 
 def _get(url: str, data: bytes | None = None):
     req = urllib.request.Request(url, data=data, headers=UA, method="POST" if data else "GET")
-    with urllib.request.urlopen(req, timeout=120) as r:
+    with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())
 
 
@@ -113,15 +113,12 @@ def xes_to_rows(fh):
                 case_attrs["case:" + el.get("key")] = _val(el)
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default="data/raw")
-    ap.add_argument("--workdir", default="/tmp/bpic2019")
-    a = ap.parse_args()
-    out, work = Path(a.out), Path(a.workdir)
-    out.mkdir(parents=True, exist_ok=True)
-    work.mkdir(parents=True, exist_ok=True)
+# Published statistics of the BPI Challenge 2019 log; any copy must reproduce them.
+EXPECTED_EVENTS = 1_595_923
+EXPECTED_CASES = 251_734
 
+
+def fetch_from_4tu(work: Path) -> tuple[Path, dict]:
     ds = find_dataset()
     uuid = ds["uuid"]
     files = _get(f"{API}/articles/{uuid}/files")
@@ -132,6 +129,27 @@ def main() -> None:
     md5 = download(f["download_url"], local)
     if expected_md5 and md5 != expected_md5:
         sys.exit(f"MD5 mismatch: got {md5}, expected {expected_md5}")
+    return local, {"source": "4TU.ResearchData", "dataset_uuid": uuid, "doi": ds.get("doi"), "file_md5": md5}
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--out", default="data/raw")
+    ap.add_argument("--workdir", default="/tmp/bpic2019")
+    ap.add_argument("--local-file", help="Use an already downloaded XES copy (e.g. a mirror) instead of 4TU")
+    ap.add_argument("--local-source", default="mirror", help="Free-text provenance of --local-file")
+    a = ap.parse_args()
+    out, work = Path(a.out), Path(a.workdir)
+    out.mkdir(parents=True, exist_ok=True)
+    work.mkdir(parents=True, exist_ok=True)
+
+    if a.local_file:
+        local = Path(a.local_file)
+        md5 = hashlib.md5(local.read_bytes()).hexdigest()
+        prov = {"source": a.local_source, "file_md5": md5}
+    else:
+        local, prov = fetch_from_4tu(work)
+    f = {"name": local.name}
 
     rows, writer, n_events, cases, schema = [], None, 0, set(), None
     pq_path = out / "bpic2019_events.parquet"
@@ -148,14 +166,13 @@ def main() -> None:
         n_events += len(rows)
     writer.close()
 
+    if (n_events, len(cases)) != (EXPECTED_EVENTS, EXPECTED_CASES):
+        sys.exit(f"Copy does not match the published log: {n_events} events, {len(cases)} cases")
     manifest = {
-        "source": "4TU.ResearchData",
+        **prov,
         "title": TITLE,
-        "dataset_uuid": uuid,
-        "doi": ds.get("doi"),
         "license": "CC BY 4.0",
         "file": f["name"],
-        "file_md5": md5,
         "events": n_events,
         "cases": len(cases),
         "parquet_sha256": hashlib.sha256(pq_path.read_bytes()).hexdigest(),
