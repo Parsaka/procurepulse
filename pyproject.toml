@@ -1,0 +1,17 @@
+[project]
+name = "procurepulse"
+version = "1.0.0"
+description = "SAP purchase-to-pay process mining: conformance, cost of deviation, early warning"
+requires-python = ">=3.11"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = ["dbt/target", "dbt/dbt_packages"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

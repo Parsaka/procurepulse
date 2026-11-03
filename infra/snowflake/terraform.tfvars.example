@@ -1,0 +1,3 @@
+# Copy to terraform.tfvars (git-ignored) and paste the public key body.
+ci_user_public_key = "MIIBIjANBgkqh..."
+# copilot_user_public_key = "MIIBIjANBgkqh..."

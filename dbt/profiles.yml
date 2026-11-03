@@ -1,0 +1,20 @@
+# Profiles live in the repo on purpose: no secrets here, only env vars.
+procurepulse:
+  target: "{{ env_var('PP_TARGET', 'dev') }}"
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('PP_DUCKDB_PATH', '../data/procurepulse.duckdb') }}"
+      threads: 4
+    snowflake:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT', 'unset') }}"
+      user: "{{ env_var('SNOWFLAKE_USER', 'unset') }}"
+      private_key: "{{ env_var('SNOWFLAKE_PRIVATE_KEY', '') }}"
+      role: PP_TRANSFORMER
+      warehouse: PP_WH
+      database: PROCUREPULSE
+      schema: DBT
+      threads: 4
+      client_session_keep_alive: false
+      query_tag: procurepulse-dbt

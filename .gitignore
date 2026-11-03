@@ -2,9 +2,20 @@ __pycache__/
 .venv/
 *.duckdb
 *.duckdb.wal
-data/
+/data/
 target/
 dbt_packages/
 logs/
 mlruns/
 .env
+
+# terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+.terraform.lock.hcl
+# secrets
+*.p8
+rsa_key*
+.streamlit/secrets.toml

@@ -1,0 +1,77 @@
+version: 2
+models:
+  - name: fct_event
+    description: One row per process event rebuilt from SAP tables.
+    columns:
+      - name: event_id
+        data_tests: [not_null, unique]
+      - name: case_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_po_item')
+                field: case_key
+      - name: actor_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['Human user', 'Batch job', 'Unknown / external']
+  - name: fct_po_item
+    description: >
+      One row per PO item with milestones, effort and nine rule-based deviation flags.
+      is_in_scope = clean timestamps and created in the window; is_mature_cohort = additionally
+      observed for at least 90 days (use it for rates and durations).
+    columns:
+      - name: case_key
+        data_tests: [not_null, unique]
+      - name: item_category
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['3-way match, invoice before GR', '3-way match, invoice after GR', 'Consignment', '2-way match']
+      - name: vendor_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_vendor')
+                field: vendor_id
+      - name: material_group
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_material_group')
+                field: material_group
+      - name: po_created_at
+        data_tests: [not_null]
+      - name: n_deviation_types
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                quote: false
+  - name: dim_vendor
+    columns:
+      - name: vendor_id
+        data_tests: [not_null, unique]
+  - name: dim_activity
+    columns:
+      - name: activity
+        data_tests: [not_null, unique]
+      - name: stage
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['Requisition', 'Ordering', 'Vendor', 'Receipt', 'Invoice', 'Payment']
+  - name: dim_date
+    columns:
+      - name: date_day
+        data_tests: [not_null, unique]
+  - name: mart_p2p_monthly_kpis
+    columns:
+      - name: conformance_rate
+        data_tests: [not_null]
+  - name: mart_deviation_summary
+    columns:
+      - name: deviation_code
+        data_tests: [not_null, unique]
