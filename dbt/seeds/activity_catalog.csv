@@ -1,0 +1,44 @@
+activity,stage,stage_order,is_rework,sap_object,description
+Create Purchase Requisition Item,Requisition,1,false,EBAN,Requester creates a purchase requisition item
+SRM: Created,Requisition,1,false,SRM,Shopping cart created in SAP SRM
+SRM: Complete,Requisition,1,false,SRM,Shopping cart completed in SAP SRM
+SRM: Awaiting Approval,Requisition,1,false,SRM,Shopping cart waits for approval
+SRM: Document Completed,Requisition,1,false,SRM,SRM document completed
+SRM: In Transfer to Execution Syst.,Requisition,1,false,SRM,SRM document transferred to the ERP
+SRM: Ordered,Ordering,2,false,SRM,SRM status ordered
+SRM: Change was Transmitted,Ordering,2,true,SRM,Change transmitted from SRM
+SRM: Deleted,Ordering,2,true,SRM,SRM document deleted
+SRM: Held,Requisition,1,true,SRM,SRM document on hold
+SRM: Incomplete,Requisition,1,true,SRM,SRM document incomplete
+SRM: Transfer Failed (E.Sys.),Requisition,1,true,SRM,Transfer to the ERP failed
+Create Purchase Order Item,Ordering,2,false,EKPO,Buyer creates the purchase order item
+Change Approval for Purchase Order,Ordering,2,true,EKKO-FRGKE,Release status of the PO changed
+Change Purchasing Group,Ordering,2,true,EKKO-EKGRP,Purchasing group changed
+Change Currency,Ordering,2,true,EKKO-WAERS,Currency changed
+Change payment term,Ordering,2,true,EKKO-ZTERM,Payment terms changed
+Change Price,Ordering,2,true,EKPO-NETPR,Net price changed
+Change Quantity,Ordering,2,true,EKPO-MENGE,Order quantity changed
+Change Storage Location,Ordering,2,true,EKPO-LGORT,Storage location changed
+Change Rejection Indicator,Ordering,2,true,EKPO-ABSKZ,Rejection indicator changed
+Delete Purchase Order Item,Ordering,2,true,EKPO-LOEKZ,Item flagged for deletion
+Block Purchase Order Item,Ordering,2,true,EKPO-LOEKZ,Item blocked
+Reactivate Purchase Order Item,Ordering,2,true,EKPO-LOEKZ,Deletion or block removed
+Receive Order Confirmation,Vendor,3,false,EKES,Vendor confirms the order
+Update Order Confirmation,Vendor,3,true,EKES,Vendor changes its confirmation
+Record Goods Receipt,Receipt,4,false,EKBE-101,Goods receipt posted
+Cancel Goods Receipt,Receipt,4,true,EKBE-102,Goods receipt reversed
+Record Service Entry Sheet,Receipt,4,false,ESSR,Service acceptance posted
+Change Delivery Indicator,Receipt,4,false,EKPO-ELIKZ,Delivery completed indicator set
+Vendor creates invoice,Invoice,5,false,EDIDC-INVOIC,Vendor issues an invoice
+Vendor creates debit memo,Invoice,5,true,EDIDC-INVOIC,Vendor issues a debit memo
+Record Invoice Receipt,Invoice,5,false,RBKP,Invoice posted in logistics invoice verification
+Cancel Invoice Receipt,Invoice,5,true,RBKP-reversal,Invoice reversed
+Record Subsequent Invoice,Invoice,5,true,RBKP-TBTKZ,Subsequent debit or credit posted
+Cancel Subsequent Invoice,Invoice,5,true,RBKP-TBTKZ-reversal,Subsequent debit or credit reversed
+Change Final Invoice Indicator,Invoice,5,false,EKPO-EREKZ,Final invoice indicator set
+Set Payment Block,Payment,6,true,RBKP-ZLSPR,Invoice blocked for payment
+Remove Payment Block,Payment,6,true,RBKP-ZLSPR,Payment block released
+Clear Invoice,Payment,6,false,BSAK,Invoice cleared (paid)
+Release Purchase Requisition,Requisition,1,false,EBAN-FRGZU,Requisition released in the release strategy
+Release Purchase Order,Ordering,2,false,EKKO-FRGZU,Purchase order released in the release strategy
+SRM: Transaction Completed,Ordering,2,false,SRM,SRM transaction completed

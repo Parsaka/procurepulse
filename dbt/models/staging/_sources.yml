@@ -1,0 +1,57 @@
+version: 2
+
+sources:
+  - name: sap
+    description: >
+      Simulated SAP ECC purchase-to-pay extract (see extract/sap_extract.py). On DuckDB the
+      tables are read straight from the Parquet landing zone; on Snowflake they are RAW
+      tables loaded with COPY INTO.
+    schema: raw
+    meta:
+      external_location: "read_parquet('{{ env_var('PP_LANDING_PATH', '../data/landing/sap') }}/{name}/**/*.parquet', hive_partitioning = true, union_by_name = true)"
+    tables:
+      - name: EKKO
+        description: Purchasing document header
+        columns:
+          - name: EBELN
+            description: Purchasing document number (CHAR 10, leading zeros)
+            data_tests: [not_null, unique]
+      - name: EKPO
+        description: Purchasing document item
+        columns:
+          - name: EBELN
+            data_tests: [not_null]
+          - name: EBELP
+            data_tests: [not_null]
+      - name: EBAN
+        description: Purchase requisition item
+      - name: EKES
+        description: Vendor confirmations
+      - name: EKBE
+        description: History per purchasing document (goods receipts only in this extract)
+      - name: ESSR
+        description: Service entry sheet header
+      - name: RBKP
+        description: Logistics invoice verification, document header
+      - name: BSAK
+        description: Cleared vendor line items (accounting)
+      - name: EDIDC
+        description: IDoc control records (inbound vendor invoices and debit memos)
+      - name: CDHDR
+        description: Change document header
+      - name: CDPOS
+        description: Change document items
+      - name: SRM_STATUS
+        description: SAP SRM shopping-cart / PO status history
+      - name: ZZ_UNMAPPED_EVENTS
+        description: Events the extract could not assign to a standard table (expected to be empty)
+      - name: LFA1
+        description: Vendor master (general data), anonymised
+      - name: T001
+        description: Company codes
+      - name: T023T
+        description: Material group texts with the spend taxonomy
+      - name: ZZ_AUDIT_EVENT_COUNTS
+        description: Per-activity event counts of the original log (reconciliation only)
+      - name: ZZ_AUDIT_CASE_LABELS
+        description: Original item-category label per case (reconciliation only)

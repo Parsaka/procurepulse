@@ -1,0 +1,42 @@
+version: 2
+models:
+  - name: stg_sap__purchase_order_items
+    description: EKPO renamed and typed. One row per PO item (the process case).
+    columns:
+      - name: case_key
+        description: EBELN || EBELP, the case identifier used everywhere downstream
+        data_tests: [not_null, unique]
+      - name: item_category_code
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['0', '1', '2', '3', '5', '9']
+  - name: stg_sap__purchase_order_headers
+    columns:
+      - name: purchase_order_id
+        data_tests: [not_null, unique]
+      - name: vendor_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_sap__vendors')
+                field: vendor_id
+      - name: company_code
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_sap__company_codes')
+                field: company_code
+  - name: stg_sap__vendors
+    columns:
+      - name: vendor_id
+        data_tests: [not_null, unique]
+  - name: stg_sap__material_groups
+    columns:
+      - name: material_group
+        data_tests: [not_null, unique]
+  - name: stg_sap__unmapped_events
+    description: Must stay empty; a row here means the extract met an unknown activity.
+    data_tests:
+      - is_empty
