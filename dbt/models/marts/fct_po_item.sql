@@ -111,6 +111,8 @@ select
         + case when dev_reversal then 1 else 0 end)                                         as n_deviation_types,
     case_end_at is not null                                                                 as is_closed,
     {{ days_between('po_created_at', 'case_end_at') }}                                      as cycle_days,
+    -- end-to-end: from the first trace of the need (requisition, PO or a vendor invoice that predates the PO)
+    {{ days_between('first_event_at', 'case_end_at') }}                                     as e2e_cycle_days,
     {{ days_between('first_ir_at', 'first_clear_at') }}                                     as invoice_to_clear_days,
     {{ days_between('po_created_at', 'first_gr_at') }}                                      as po_to_gr_days,
     {{ month_start('po_created_at') }}                                                      as po_created_month,
