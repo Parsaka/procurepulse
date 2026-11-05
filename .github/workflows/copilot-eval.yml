@@ -1,0 +1,42 @@
+name: copilot-eval
+
+# Manual: rebuild the warehouse and score the Process Copilot on the 30-question eval set.
+# Needs the repository secret ANTHROPIC_API_KEY. One run makes roughly 100-200 model calls.
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Question ids to run, space separated (empty = all 30)"
+        required: false
+        default: ""
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: sudo apt-get update && sudo apt-get install -y graphviz
+      - run: pip install -r requirements.txt
+      - name: Check the secret is set
+        run: test -n "$ANTHROPIC_API_KEY" || { echo "::error::Add the repository secret ANTHROPIC_API_KEY first"; exit 1; }
+      - run: make data extract dbt analytics ml
+      - name: Run the eval
+        run: |
+          if [ -n "${{ inputs.only }}" ]; then python -m copilot.eval.run_eval --only ${{ inputs.only }}; else python -m copilot.eval.run_eval; fi
+      - run: cat copilot/eval/RESULTS.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: copilot-eval
+          path: |
+            copilot/eval/RESULTS.md
+            copilot/eval/results.json
+          retention-days: 30

@@ -96,6 +96,7 @@ docs/           findings, cost model, SAP data model (EN/DE), KPI definitions, A
 
 ## Documentation
 
+- [Setup guide](docs/setup.md): Streamlit, Snowflake, copilot eval, Power BI
 - [Findings](docs/findings.md): the answer, RQ by RQ, with limits
 - [Cost model](docs/cost_model.md)
 - [SAP data model (EN/DE)](docs/sap_data_model.md)

@@ -19,3 +19,4 @@ terraform.tfvars
 *.p8
 rsa_key*
 .streamlit/secrets.toml
+keys/
