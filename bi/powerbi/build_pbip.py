@@ -61,7 +61,7 @@ REWORK = (
     "fct_po_item[dev_price_change_after_invoice] || fct_po_item[dev_quantity_change_after_gr]"
     " || fct_po_item[dev_payment_block] || fct_po_item[dev_reversal]"
 )
-EUR_M = '€#,0.00,," M"'  # €1.27 M: thousands separators scaled twice
+EUR_M = "€#,0"  # a literal " M" here doubles up with the auto units on chart axes; cards scale in card()
 MEASURES: dict[str, tuple[str, str]] = {
     "PO Items": ("COUNTROWS ( fct_po_item )", "#,0"),
     "PO Value EUR": ("SUM ( fct_po_item[net_value_eur] )", "€#,0"),
@@ -407,8 +407,11 @@ def slicer_default(entity: str, column: str, literal: str) -> dict:
 
 
 def card(p: Page, x: int, y: int, measure: str, heading: str) -> None:
-    # Display units 1: the default "Auto" rounds €1.27 M to €1M
-    labels = {"labels": [{"properties": {"labelDisplayUnits": lit("1D")}}]}
+    # The default "Auto" rounds €1.27 M to €1M: EUR in millions with 2 decimals, the rest unscaled
+    props = {"labelDisplayUnits": lit("1D")}
+    if MEASURES[measure][1] == EUR_M:
+        props = {"labelDisplayUnits": lit("1000000D"), "labelPrecision": lit("2L")}
+    labels = {"labels": [{"properties": props}]}
     p.add("card", x, y, 290, 120, {"Values": [mea(measure)]}, heading, objects=labels)
 
 
