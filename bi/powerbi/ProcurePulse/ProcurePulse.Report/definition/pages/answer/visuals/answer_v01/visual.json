@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "Conformance Rate (Mature Closed)"
                 }
               },
-              "queryRef": "Measures.Conformance Rate (Mature Closed)",
+              "queryRef": "KPIs.Conformance Rate (Mature Closed)",
               "nativeQueryRef": "Conformance Rate (Mature Closed)"
             }
           ]
@@ -34,6 +34,21 @@
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {

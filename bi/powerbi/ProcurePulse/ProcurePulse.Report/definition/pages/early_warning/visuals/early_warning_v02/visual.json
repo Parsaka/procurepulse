@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "Observed Rework Rate (Scored)"
                 }
               },
-              "queryRef": "Measures.Observed Rework Rate (Scored)",
+              "queryRef": "KPIs.Observed Rework Rate (Scored)",
               "nativeQueryRef": "Observed Rework Rate (Scored)"
             }
           ]
@@ -34,6 +34,21 @@
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {

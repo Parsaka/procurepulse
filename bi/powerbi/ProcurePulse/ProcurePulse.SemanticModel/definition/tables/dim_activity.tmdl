@@ -29,7 +29,7 @@ table dim_activity
 
 	column is_rework
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: c8198224-40b4-5778-a222-7ba9086886c7
 		summarizeBy: none
 		sourceColumn: is_rework

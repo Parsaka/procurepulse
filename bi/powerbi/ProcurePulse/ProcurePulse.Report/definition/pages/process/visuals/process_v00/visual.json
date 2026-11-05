@@ -38,13 +38,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "Conformance Rate"
                 }
               },
-              "queryRef": "Measures.Conformance Rate",
+              "queryRef": "KPIs.Conformance Rate",
               "nativeQueryRef": "Conformance Rate"
             }
           ]

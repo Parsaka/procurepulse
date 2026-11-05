@@ -48,13 +48,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "PO Items"
                 }
               },
-              "queryRef": "Measures.PO Items",
+              "queryRef": "KPIs.PO Items",
               "nativeQueryRef": "PO Items"
             },
             {
@@ -62,13 +62,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "Rework Items"
                 }
               },
-              "queryRef": "Measures.Rework Items",
+              "queryRef": "KPIs.Rework Items",
               "nativeQueryRef": "Rework Items"
             },
             {
@@ -76,13 +76,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "Rework Rate"
                 }
               },
-              "queryRef": "Measures.Rework Rate",
+              "queryRef": "KPIs.Rework Rate",
               "nativeQueryRef": "Rework Rate"
             },
             {
@@ -90,13 +90,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "Payment Block Rate"
                 }
               },
-              "queryRef": "Measures.Payment Block Rate",
+              "queryRef": "KPIs.Payment Block Rate",
               "nativeQueryRef": "Payment Block Rate"
             },
             {
@@ -104,13 +104,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "Share of Rework Items"
                 }
               },
-              "queryRef": "Measures.Share of Rework Items",
+              "queryRef": "KPIs.Share of Rework Items",
               "nativeQueryRef": "Share of Rework Items"
             }
           ]
@@ -123,7 +123,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measures"
+                    "Entity": "KPIs"
                   }
                 },
                 "Property": "Rework Items"

@@ -38,13 +38,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "Intervention Value EUR per Year"
                 }
               },
-              "queryRef": "Measures.Intervention Value EUR per Year",
+              "queryRef": "KPIs.Intervention Value EUR per Year",
               "nativeQueryRef": "Intervention Value EUR per Year"
             }
           ]
@@ -57,7 +57,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measures"
+                    "Entity": "KPIs"
                   }
                 },
                 "Property": "Intervention Value EUR per Year"

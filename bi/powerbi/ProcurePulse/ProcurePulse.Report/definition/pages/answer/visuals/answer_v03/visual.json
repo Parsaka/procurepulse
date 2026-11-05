@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "Cost of Rework EUR per Year"
                 }
               },
-              "queryRef": "Measures.Cost of Rework EUR per Year",
+              "queryRef": "KPIs.Cost of Rework EUR per Year",
               "nativeQueryRef": "Cost of Rework EUR per Year"
             }
           ]
@@ -34,6 +34,21 @@
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {

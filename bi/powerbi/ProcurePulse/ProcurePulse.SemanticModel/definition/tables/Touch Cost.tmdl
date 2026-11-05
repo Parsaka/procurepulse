@@ -6,7 +6,6 @@ table 'Touch Cost'
 		formatString: €0
 		lineageTag: 7c7ec601-ecae-54f2-b625-b97ae469b9c2
 		summarizeBy: none
-		isNameInferred
 		sourceColumn: [Value]
 
 		extendedProperty ParameterMetadata =

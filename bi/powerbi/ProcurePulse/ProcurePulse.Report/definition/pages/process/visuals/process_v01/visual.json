@@ -38,13 +38,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "First Time Right Rate"
                 }
               },
-              "queryRef": "Measures.First Time Right Rate",
+              "queryRef": "KPIs.First Time Right Rate",
               "nativeQueryRef": "First Time Right Rate"
             }
           ]

@@ -38,13 +38,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "Observed Rework Rate (Scored)"
                 }
               },
-              "queryRef": "Measures.Observed Rework Rate (Scored)",
+              "queryRef": "KPIs.Observed Rework Rate (Scored)",
               "nativeQueryRef": "Observed Rework Rate (Scored)"
             },
             {
@@ -52,13 +52,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "KPIs"
                     }
                   },
                   "Property": "Average Risk Score"
                 }
               },
-              "queryRef": "Measures.Average Risk Score",
+              "queryRef": "KPIs.Average Risk Score",
               "nativeQueryRef": "Average Risk Score"
             }
           ]

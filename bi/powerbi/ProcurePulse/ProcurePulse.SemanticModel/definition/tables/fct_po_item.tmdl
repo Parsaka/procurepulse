@@ -70,7 +70,7 @@ table fct_po_item
 
 	column is_goods_receipt_expected
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 60808a18-2e53-5ad4-a559-30eaa7def1ea
 		summarizeBy: none
 		sourceColumn: is_goods_receipt_expected
@@ -79,7 +79,7 @@ table fct_po_item
 
 	column is_gr_based_invoice_verification
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 1fe74f33-e602-5d63-8bd0-71bb18d7456c
 		summarizeBy: none
 		sourceColumn: is_gr_based_invoice_verification
@@ -399,7 +399,7 @@ table fct_po_item
 
 	column dev_invoice_before_gr
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: bf8b056c-078f-5222-870d-74ad8d5e5992
 		summarizeBy: none
 		sourceColumn: dev_invoice_before_gr
@@ -408,7 +408,7 @@ table fct_po_item
 
 	column dev_paid_before_gr
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 69a1e20b-951a-5c8c-9a23-09e0a39accb6
 		summarizeBy: none
 		sourceColumn: dev_paid_before_gr
@@ -417,7 +417,7 @@ table fct_po_item
 
 	column dev_gr_on_two_way_item
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 68c951b2-5ae8-5c0b-8be6-3277d8d75a63
 		summarizeBy: none
 		sourceColumn: dev_gr_on_two_way_item
@@ -426,7 +426,7 @@ table fct_po_item
 
 	column dev_invoice_on_consignment
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 7b9a7c72-979f-5393-881c-6abfe97225b8
 		summarizeBy: none
 		sourceColumn: dev_invoice_on_consignment
@@ -435,7 +435,7 @@ table fct_po_item
 
 	column dev_po_after_invoice
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: bc20a1f2-e8c6-53d3-9644-cba243c0d099
 		summarizeBy: none
 		sourceColumn: dev_po_after_invoice
@@ -444,7 +444,7 @@ table fct_po_item
 
 	column dev_price_change_after_invoice
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 9e4cd39f-1afd-5216-bf55-884318c2263a
 		summarizeBy: none
 		sourceColumn: dev_price_change_after_invoice
@@ -453,7 +453,7 @@ table fct_po_item
 
 	column dev_quantity_change_after_gr
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: a84be4aa-3ea0-57ca-bce8-a795284e754d
 		summarizeBy: none
 		sourceColumn: dev_quantity_change_after_gr
@@ -462,7 +462,7 @@ table fct_po_item
 
 	column dev_payment_block
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: fb6e4dd5-67f4-5415-9a74-2125b20a29e7
 		summarizeBy: none
 		sourceColumn: dev_payment_block
@@ -471,7 +471,7 @@ table fct_po_item
 
 	column dev_reversal
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 6899dcf7-3a5c-5764-8c39-02df2b626b8f
 		summarizeBy: none
 		sourceColumn: dev_reversal
@@ -489,7 +489,7 @@ table fct_po_item
 
 	column has_deviation
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: d5c962f3-8c54-547d-8b4e-cf4869bad53d
 		summarizeBy: none
 		sourceColumn: has_deviation
@@ -507,7 +507,7 @@ table fct_po_item
 
 	column is_closed
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: b54ababb-8a0e-527b-9e13-d6b496d5a5de
 		summarizeBy: none
 		sourceColumn: is_closed
@@ -562,7 +562,7 @@ table fct_po_item
 
 	column is_in_scope
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 87ceea93-0302-5c8b-ab9a-468d44a8b163
 		summarizeBy: none
 		sourceColumn: is_in_scope
@@ -571,7 +571,7 @@ table fct_po_item
 
 	column is_mature_cohort
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 3ef733da-e413-53a8-b5be-b3ce0589f7cf
 		summarizeBy: none
 		sourceColumn: is_mature_cohort

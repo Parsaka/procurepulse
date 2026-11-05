@@ -6,6 +6,8 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
+	annotation __PBI_TimeIntelligenceEnabled = 0
+
 ref table fct_po_item
 ref table fct_event
 ref table early_warning_scores
@@ -17,7 +19,7 @@ ref table dim_activity
 ref table dim_user
 ref table deviation_effects
 ref table intervention_value
-ref table Measures
+ref table KPIs
 ref table 'Touch Cost'
 
 ref cultureInfo en-US

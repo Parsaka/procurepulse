@@ -50,7 +50,7 @@ table dim_date
 
 	column is_weekend
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 6ec8bddd-e115-5c8e-8f54-dcef6c7a2386
 		summarizeBy: none
 		sourceColumn: is_weekend

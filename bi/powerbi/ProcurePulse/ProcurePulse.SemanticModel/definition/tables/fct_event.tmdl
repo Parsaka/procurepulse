@@ -64,7 +64,7 @@ table fct_event
 
 	column is_manual_touch
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: d9145623-efe4-58bb-89b1-af81c802fc99
 		summarizeBy: none
 		sourceColumn: is_manual_touch
@@ -73,7 +73,7 @@ table fct_event
 
 	column is_rework
 		dataType: boolean
-		formatString: "TRUE";"TRUE";"FALSE"
+		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: ba11da01-6389-55c6-8d1e-d94e5c799a24
 		summarizeBy: none
 		sourceColumn: is_rework

@@ -1,5 +1,5 @@
-table Measures
-	lineageTag: 0ff611db-0129-5722-bdf8-3076b62b2249
+table KPIs
+	lineageTag: d9a1418f-ec4c-598e-ac88-223ae42a43b0
 
 	measure 'PO Items' = COUNTROWS ( fct_po_item )
 		formatString: #,0
@@ -102,7 +102,7 @@ table Measures
 		lineageTag: acd73d70-fc76-5c5b-933b-34e19850e69a
 
 	measure 'Top Decile Lift' = DIVIDE ( CALCULATE ( AVERAGE ( early_warning_scores[label] ), early_warning_scores[risk_decile] = 10 ), CALCULATE ( AVERAGE ( early_warning_scores[label] ), REMOVEFILTERS ( early_warning_scores[risk_decile] ) ) )
-		formatString: 0.00"×"
+		formatString: "0.00""×"""
 		lineageTag: 1f89c487-1306-5816-a73c-07edbe4e54d4
 
 	measure 'Vendor Rank by Rework' = IF ( HASONEVALUE ( dim_vendor[vendor_id] ), RANKX ( ALL ( dim_vendor[vendor_id] ), [Rework Items], , DESC, DENSE ) )
@@ -116,12 +116,12 @@ table Measures
 	column Value
 		dataType: string
 		isHidden
-		lineageTag: abb38cac-96c8-5156-8ed8-3fd646d0559a
+		lineageTag: 1418e52a-37fd-5327-b94b-bf82e01e82f9
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [Value]
 
-	partition Measures = calculated
+	partition KPIs = calculated
 		mode: import
 		source = {BLANK()}
 

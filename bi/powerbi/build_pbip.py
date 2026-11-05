@@ -143,6 +143,11 @@ def q(name: str) -> str:
     return name if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name) else "'" + name.replace("'", "''") + "'"
 
 
+def tmdl_str(value: str) -> str:
+    """A TMDL value holding quotes must be quoted itself, with its quotes doubled."""
+    return '"' + value.replace('"', '""') + '"' if '"' in value else value
+
+
 def tmdl_type(t: pa.DataType) -> tuple[str, str | None, str]:
     """Return (dataType, formatString, summarizeBy)."""
     if pa.types.is_boolean(t):
@@ -180,7 +185,7 @@ def table_tmdl(name: str) -> str:
         lines.append(f"\tcolumn {q(field.name)}")
         lines.append(f"\t\tdataType: {dtype}")
         if fmt:
-            lines.append(f"\t\tformatString: {fmt}")
+            lines.append(f"\t\tformatString: {tmdl_str(fmt)}")
         if (name, field.name) in KEYS and name != "dim_date":
             lines.append("\t\tisHidden")
         if name == "dim_date" and field.name == "date_day":
@@ -207,22 +212,22 @@ def table_tmdl(name: str) -> str:
 
 
 def measures_tmdl() -> str:
-    lines = ["table Measures", f"\tlineageTag: {gid('t', 'Measures')}", ""]
+    lines = ["table KPIs", f"\tlineageTag: {gid('t', 'KPIs')}", ""]
     for m, (dax, fmt) in MEASURES.items():
         lines.append(f"\tmeasure {q(m)} = {dax}")
-        lines.append(f"\t\tformatString: {fmt}")
+        lines.append(f"\t\tformatString: {tmdl_str(fmt)}")
         lines.append(f"\t\tlineageTag: {gid('m', m)}")
         lines.append("")
     lines += [
         "\tcolumn Value",
         "\t\tdataType: string",
         "\t\tisHidden",
-        f"\t\tlineageTag: {gid('c', 'Measures', 'Value')}",
+        f"\t\tlineageTag: {gid('c', 'KPIs', 'Value')}",
         "\t\tsummarizeBy: none",
         "\t\tisNameInferred",
         "\t\tsourceColumn: [Value]",
         "",
-        "\tpartition Measures = calculated",
+        "\tpartition KPIs = calculated",
         "\t\tmode: import",
         "\t\tsource = {BLANK()}",
         "",
@@ -242,7 +247,6 @@ def touch_cost_tmdl() -> str:
                 "\t\tformatString: €0",
                 f"\t\tlineageTag: {gid('c', 'Touch Cost', 'Touch Cost')}",
                 "\t\tsummarizeBy: none",
-                "\t\tisNameInferred",
                 "\t\tsourceColumn: [Value]",
                 "",
                 "\t\textendedProperty ParameterMetadata =",
@@ -268,11 +272,12 @@ def semantic_model(data_folder: str) -> None:
     )
     d = sm / "definition"
     write(d / "database.tmdl", "database\n\tcompatibilityLevel: 1600\n")
-    refs = "\n".join(f"ref table {q(t)}" for t in [*TABLES, "Measures", "Touch Cost"])
+    refs = "\n".join(f"ref table {q(t)}" for t in [*TABLES, "KPIs", "Touch Cost"])
     write(
         d / "model.tmdl",
         "model Model\n\tculture: en-US\n\tdefaultPowerBIDataSourceVersion: powerBI_V3\n"
         "\tsourceQueryCulture: en-US\n\tdataAccessOptions\n\t\tlegacyRedirects\n\t\treturnErrorValuesAsNull\n\n"
+        "\tannotation __PBI_TimeIntelligenceEnabled = 0\n\n"
         f"{refs}\n\nref cultureInfo en-US\n",
     )
     folder = data_folder.replace('"', '""')
@@ -293,7 +298,7 @@ def semantic_model(data_folder: str) -> None:
     write(d / "cultures" / "en-US.tmdl", "cultureInfo en-US\n")
     for t in TABLES:
         write(d / "tables" / f"{t}.tmdl", table_tmdl(t))
-    write(d / "tables" / "Measures.tmdl", measures_tmdl())
+    write(d / "tables" / "KPIs.tmdl", measures_tmdl())
     write(d / "tables" / "Touch Cost.tmdl", touch_cost_tmdl())
 
 
@@ -305,7 +310,7 @@ def col(entity: str, prop: str) -> dict:
 
 
 def mea(prop: str) -> dict:
-    return {"Measure": {"Expression": {"SourceRef": {"Entity": "Measures"}}, "Property": prop}}
+    return {"Measure": {"Expression": {"SourceRef": {"Entity": "KPIs"}}, "Property": prop}}
 
 
 def proj(field: dict) -> dict:
@@ -381,7 +386,9 @@ class Page:
 
 
 def card(p: Page, x: int, y: int, measure: str, heading: str) -> None:
-    p.add("card", x, y, 290, 120, {"Values": [mea(measure)]}, heading)
+    # Display units 1: the default "Auto" rounds €1.27 M to €1M
+    labels = {"labels": [{"properties": {"labelDisplayUnits": lit("1D")}}]}
+    p.add("card", x, y, 290, 120, {"Values": [mea(measure)]}, heading, objects=labels)
 
 
 def desc(field: dict) -> dict:
@@ -603,13 +610,17 @@ def report() -> None:
         {
             "$schema": f"{SCHEMA}/report/definition/report/3.0.0/schema.json",
             "themeCollection": {
+                "baseTheme": {
+                    "name": "CY24SU10",
+                    "reportVersionAtImport": {"visual": "2.0.0", "report": "3.0.0", "page": "2.0.0"},
+                    "type": "SharedResources",
+                },
                 "customTheme": {
                     "name": "ProcurePulse.json",
                     "reportVersionAtImport": {"visual": "2.0.0", "report": "3.0.0", "page": "2.0.0"},
                     "type": "RegisteredResources",
                 }
             },
-            "layoutOptimization": "None",
             "resourcePackages": [
                 {
                     "name": "RegisteredResources",
@@ -617,12 +628,6 @@ def report() -> None:
                     "items": [{"name": "ProcurePulse.json", "path": "ProcurePulse.json", "type": "CustomTheme"}],
                 }
             ],
-            "settings": {
-                "useStylableVisualContainerHeader": True,
-                "exportDataMode": "AllowSummarized",
-                "defaultDrillFilterOtherVisuals": True,
-                "allowChangeFilterTypes": True,
-            },
         },
     )
     ps = pages()
@@ -665,7 +670,7 @@ def main() -> None:
     wjson(
         OUT / f"{NAME}.pbip",
         {
-            "$schema": f"{SCHEMA}/pbip/definitionProperties/1.0.0/schema.json",
+            "$schema": "https://developer.microsoft.com/json-schemas/fabric/pbip/pbipProperties/1.0.0/schema.json",
             "version": "1.0",
             "artifacts": [{"report": {"path": f"{NAME}.Report"}}],
             "settings": {"enableAutoRecovery": True},
