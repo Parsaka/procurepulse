@@ -90,3 +90,8 @@ jobs:
             app/data/
             docs/img/
           retention-days: 14
+      - uses: actions/upload-artifact@v4
+        with:
+          name: powerbi-data
+          path: data/bi/
+          retention-days: 30
