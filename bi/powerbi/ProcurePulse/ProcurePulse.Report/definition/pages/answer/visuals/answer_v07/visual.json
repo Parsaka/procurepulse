@@ -1,0 +1,102 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "answer_v07",
+  "position": {
+    "x": 800,
+    "y": 200,
+    "z": 7000,
+    "width": 460,
+    "height": 500,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "intervention_value"
+                    }
+                  },
+                  "Property": "intervention"
+                }
+              },
+              "queryRef": "intervention_value.intervention",
+              "nativeQueryRef": "intervention"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "intervention_value"
+                    }
+                  },
+                  "Property": "family"
+                }
+              },
+              "queryRef": "intervention_value.family",
+              "nativeQueryRef": "family"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "intervention_value"
+                    }
+                  },
+                  "Property": "owner"
+                }
+              },
+              "queryRef": "intervention_value.owner",
+              "nativeQueryRef": "owner"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "intervention_value"
+                    }
+                  },
+                  "Property": "share_of_rework_effort"
+                }
+              },
+              "queryRef": "intervention_value.share_of_rework_effort",
+              "nativeQueryRef": "share_of_rework_effort"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Interventions and owners'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

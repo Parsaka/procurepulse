@@ -1,0 +1,124 @@
+table intervention_value
+	lineageTag: 9f189496-c2c4-5784-bf4e-246db8c8a809
+
+	column intervention
+		dataType: string
+		lineageTag: 1d3cd63e-0ab2-5927-b346-38faead987eb
+		summarizeBy: none
+		sourceColumn: intervention
+
+		annotation SummarizationSetBy = Automatic
+
+	column family
+		dataType: string
+		lineageTag: 110c6fb9-2c7e-5efa-ab39-6588b5f9abb5
+		summarizeBy: none
+		sourceColumn: family
+
+		annotation SummarizationSetBy = Automatic
+
+	column owner
+		dataType: string
+		lineageTag: c9eaac14-1e24-5dff-b85b-1fab76de24a4
+		summarizeBy: none
+		sourceColumn: owner
+
+		annotation SummarizationSetBy = Automatic
+
+	column deviations
+		dataType: string
+		lineageTag: 2bd686a5-b185-5a20-af3c-ed03dcdf85d7
+		summarizeBy: none
+		sourceColumn: deviations
+
+		annotation SummarizationSetBy = Automatic
+
+	column affected_items_per_year
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 096d95b1-9408-5402-bec7-22ea6bf4f3af
+		summarizeBy: sum
+		sourceColumn: affected_items_per_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column exposed_value_eur_per_year
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 33cf833a-c1da-5cf2-9161-bcf7b2d2ca7b
+		summarizeBy: sum
+		sourceColumn: exposed_value_eur_per_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column touches_saved_per_year
+		dataType: double
+		formatString: #,0.00
+		lineageTag: b4abcb1e-e947-57cf-a4ad-c637017a79cb
+		summarizeBy: sum
+		sourceColumn: touches_saved_per_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_days_saved_per_year
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 119c167d-f3eb-56c7-97e7-fa79126feaeb
+		summarizeBy: sum
+		sourceColumn: item_days_saved_per_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column effort_saved_eur_low
+		dataType: double
+		formatString: #,0.00
+		lineageTag: b41b8ce6-8278-5c21-ac7e-8f01fc6ed91b
+		summarizeBy: sum
+		sourceColumn: effort_saved_eur_low
+
+		annotation SummarizationSetBy = Automatic
+
+	column effort_saved_eur_base
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 3425e9e3-297a-5a4e-8790-44453986fffd
+		summarizeBy: sum
+		sourceColumn: effort_saved_eur_base
+
+		annotation SummarizationSetBy = Automatic
+
+	column effort_saved_eur_high
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 3ed3c6bc-5996-557f-84eb-7c18d8fb4cab
+		summarizeBy: sum
+		sourceColumn: effort_saved_eur_high
+
+		annotation SummarizationSetBy = Automatic
+
+	column rank_in_family
+		dataType: int64
+		formatString: 0
+		lineageTag: fb109c43-15e8-50d0-9333-aacc9ae8f083
+		summarizeBy: none
+		sourceColumn: rank_in_family
+
+		annotation SummarizationSetBy = Automatic
+
+	column share_of_rework_effort
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 738accb6-4558-5c2b-89f7-f4c7d351a63d
+		summarizeBy: sum
+		sourceColumn: share_of_rework_effort
+
+		annotation SummarizationSetBy = Automatic
+
+	partition intervention_value = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "intervention_value.parquet"))
+				in
+				    Source
+

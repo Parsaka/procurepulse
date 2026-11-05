@@ -1,0 +1,98 @@
+table deviation_effects
+	lineageTag: aca4c46a-cccd-5653-8f64-c552ae6d07f0
+
+	column deviation_code
+		dataType: string
+		lineageTag: ea6c9e72-fc82-5e0e-bb01-4ea05d68c39c
+		summarizeBy: none
+		sourceColumn: deviation_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column deviation_label
+		dataType: string
+		lineageTag: 8762d5fb-e2ea-57d9-92d2-c06b1c44ffe3
+		summarizeBy: none
+		sourceColumn: deviation_label
+
+		annotation SummarizationSetBy = Automatic
+
+	column outcome
+		dataType: string
+		lineageTag: 21a8bd60-9095-503c-b7c8-bc2dced7ab7a
+		summarizeBy: none
+		sourceColumn: outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	column excess
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 2624d6ab-7460-5ff5-ac19-3dfc6ddfa149
+		summarizeBy: sum
+		sourceColumn: excess
+
+		annotation SummarizationSetBy = Automatic
+
+	column ci_low
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 165f0cd1-c97c-5f12-b0e8-f23d27065563
+		summarizeBy: sum
+		sourceColumn: ci_low
+
+		annotation SummarizationSetBy = Automatic
+
+	column ci_high
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 936ea153-5b57-5636-8ae8-224ca414031f
+		summarizeBy: sum
+		sourceColumn: ci_high
+
+		annotation SummarizationSetBy = Automatic
+
+	column p_value
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 3ddeb823-8f16-57af-9954-767d82874cfa
+		summarizeBy: sum
+		sourceColumn: p_value
+
+		annotation SummarizationSetBy = Automatic
+
+	column items_with_deviation
+		dataType: int64
+		formatString: 0
+		lineageTag: 780021b3-6eac-5e4d-9ac3-d3fd5fa06bbf
+		summarizeBy: sum
+		sourceColumn: items_with_deviation
+
+		annotation SummarizationSetBy = Automatic
+
+	column cem_matched_items
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 75ceb3c0-f022-5f26-8eae-289c22d87f5c
+		summarizeBy: sum
+		sourceColumn: cem_matched_items
+
+		annotation SummarizationSetBy = Automatic
+
+	column cem_excess
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 04b720e3-21a6-5da9-9f32-e1550e69c23d
+		summarizeBy: sum
+		sourceColumn: cem_excess
+
+		annotation SummarizationSetBy = Automatic
+
+	partition deviation_effects = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "deviation_effects.parquet"))
+				in
+				    Source
+

@@ -1,0 +1,36 @@
+table dim_company_code
+	lineageTag: e7913825-f4a5-5954-a80a-0da0e23646a3
+
+	column company_code
+		dataType: string
+		isHidden
+		lineageTag: fe5ada3e-34ec-5c79-a456-81409b1deaed
+		summarizeBy: none
+		sourceColumn: company_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_name
+		dataType: string
+		lineageTag: 7ad6b4cb-ab3c-56ee-905a-eaee153c06d9
+		summarizeBy: none
+		sourceColumn: company_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column currency
+		dataType: string
+		lineageTag: b0946437-bd54-59be-9597-017ef77926a1
+		summarizeBy: none
+		sourceColumn: currency
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_company_code = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "dim_company_code.parquet"))
+				in
+				    Source
+

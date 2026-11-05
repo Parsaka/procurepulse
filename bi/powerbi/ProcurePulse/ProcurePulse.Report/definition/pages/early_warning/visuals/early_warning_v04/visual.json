@@ -1,0 +1,134 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "early_warning_v04",
+  "position": {
+    "x": 650,
+    "y": 160,
+    "z": 4000,
+    "width": 610,
+    "height": 540,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "early_warning_scores"
+                    }
+                  },
+                  "Property": "case_key"
+                }
+              },
+              "queryRef": "early_warning_scores.case_key",
+              "nativeQueryRef": "case_key"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "early_warning_scores"
+                    }
+                  },
+                  "Property": "risk_decile"
+                }
+              },
+              "queryRef": "early_warning_scores.risk_decile",
+              "nativeQueryRef": "risk_decile"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "early_warning_scores"
+                    }
+                  },
+                  "Property": "risk_score"
+                }
+              },
+              "queryRef": "early_warning_scores.risk_score",
+              "nativeQueryRef": "risk_score"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "early_warning_scores"
+                    }
+                  },
+                  "Property": "top_reason"
+                }
+              },
+              "queryRef": "early_warning_scores.top_reason",
+              "nativeQueryRef": "top_reason"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "early_warning_scores"
+                    }
+                  },
+                  "Property": "label"
+                }
+              },
+              "queryRef": "early_warning_scores.label",
+              "nativeQueryRef": "label"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "early_warning_scores"
+                  }
+                },
+                "Property": "risk_score"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Items to review (sort by risk score)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

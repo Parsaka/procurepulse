@@ -1,0 +1,588 @@
+table fct_po_item
+	lineageTag: 1fcf00e8-9c91-5d30-aa06-e841738ba49e
+
+	column case_key
+		dataType: string
+		isHidden
+		lineageTag: 5f73a08e-64d6-5a14-bf4c-7057c3eeacf3
+		summarizeBy: none
+		sourceColumn: case_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_order_id
+		dataType: string
+		lineageTag: 50825c37-6141-5a02-9c7a-c6d7ecc6ecfa
+		summarizeBy: none
+		sourceColumn: purchase_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_order_item
+		dataType: string
+		lineageTag: cffc3f0e-5a36-5d3e-805c-62ae8c75c3be
+		summarizeBy: none
+		sourceColumn: purchase_order_item
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_code
+		dataType: string
+		isHidden
+		lineageTag: cd7bf0af-76a7-557a-b4c3-04e9cc48cb10
+		summarizeBy: none
+		sourceColumn: company_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column document_type
+		dataType: string
+		lineageTag: b6c6d4fd-77f9-564f-9ebf-c7b687622a6e
+		summarizeBy: none
+		sourceColumn: document_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column vendor_id
+		dataType: string
+		isHidden
+		lineageTag: c675305f-c1d5-5167-82ce-d1923f59d929
+		summarizeBy: none
+		sourceColumn: vendor_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_category_code
+		dataType: string
+		lineageTag: 7153a7c8-6167-5814-bae5-223a5a819bc6
+		summarizeBy: none
+		sourceColumn: item_category_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_category
+		dataType: string
+		lineageTag: 64ff15a1-5c46-5dcf-af7e-4327b9d7f9a8
+		summarizeBy: none
+		sourceColumn: item_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_goods_receipt_expected
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: 60808a18-2e53-5ad4-a559-30eaa7def1ea
+		summarizeBy: none
+		sourceColumn: is_goods_receipt_expected
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_gr_based_invoice_verification
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: 1fe74f33-e602-5d63-8bd0-71bb18d7456c
+		summarizeBy: none
+		sourceColumn: is_gr_based_invoice_verification
+
+		annotation SummarizationSetBy = Automatic
+
+	column material_group
+		dataType: string
+		isHidden
+		lineageTag: 70b64aed-9e3e-56b3-b141-1f4b155fc39f
+		summarizeBy: none
+		sourceColumn: material_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column spend_area
+		dataType: string
+		lineageTag: d99ea7c4-4801-57f2-aff1-d69dffa6a68f
+		summarizeBy: none
+		sourceColumn: spend_area
+
+		annotation SummarizationSetBy = Automatic
+
+	column sub_spend_area
+		dataType: string
+		lineageTag: 03d39a03-9a3d-545f-bdeb-59b613346bf5
+		summarizeBy: none
+		sourceColumn: sub_spend_area
+
+		annotation SummarizationSetBy = Automatic
+
+	column spend_classification
+		dataType: string
+		lineageTag: ff55d75c-46ca-5bfc-8b3c-93d8b132ef60
+		summarizeBy: none
+		sourceColumn: spend_classification
+
+		annotation SummarizationSetBy = Automatic
+
+	column net_value_eur
+		dataType: double
+		formatString: #,0.00
+		lineageTag: c5383142-a9bc-595c-af0c-ac69f3f61b49
+		summarizeBy: sum
+		sourceColumn: net_value_eur
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: a8bb7a7c-d5cc-56ff-aa15-815212a1ef54
+		summarizeBy: none
+		sourceColumn: created_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by
+		dataType: string
+		lineageTag: b973aed1-5030-5395-9b76-5985ece9d85f
+		summarizeBy: none
+		sourceColumn: created_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_events
+		dataType: int64
+		formatString: 0
+		lineageTag: 8de43f60-45f9-528c-85a1-ce8a0375818f
+		summarizeBy: sum
+		sourceColumn: n_events
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_manual_touches
+		dataType: int64
+		formatString: 0
+		lineageTag: 82c1383a-3de7-5f7f-b2e5-1b87a22b68e0
+		summarizeBy: sum
+		sourceColumn: n_manual_touches
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_rework_events
+		dataType: int64
+		formatString: 0
+		lineageTag: e53653c3-92aa-5127-ba09-e84d8d885ccc
+		summarizeBy: sum
+		sourceColumn: n_rework_events
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_manual_rework_touches
+		dataType: int64
+		formatString: 0
+		lineageTag: ec1870a9-4377-53b4-b302-4ad4fab66dd2
+		summarizeBy: sum
+		sourceColumn: n_manual_rework_touches
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_batch_events
+		dataType: int64
+		formatString: 0
+		lineageTag: 85a6a390-3b29-5755-b941-f93540e757ef
+		summarizeBy: sum
+		sourceColumn: n_batch_events
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_events_outside_window
+		dataType: int64
+		formatString: 0
+		lineageTag: 77bb0fa4-ca54-5feb-bfeb-5a32892299dd
+		summarizeBy: sum
+		sourceColumn: n_events_outside_window
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_event_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 62e98c8b-5af7-57fa-933f-e2bd6eeb5f2a
+		summarizeBy: none
+		sourceColumn: first_event_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_event_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 23307c1a-888a-5c14-abc0-d4f621e2d04d
+		summarizeBy: none
+		sourceColumn: last_event_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column po_created_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 2524135d-416c-5b5b-b70a-041b8c4c206b
+		summarizeBy: none
+		sourceColumn: po_created_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column pr_created_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 86174adf-8378-552c-8c80-3ef3ca0eb4ab
+		summarizeBy: none
+		sourceColumn: pr_created_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_gr_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 07b82c29-e50d-56e8-b0d5-417070a90172
+		summarizeBy: none
+		sourceColumn: first_gr_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_gr_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 6a556d20-50ef-58ef-a839-6443fe021061
+		summarizeBy: none
+		sourceColumn: last_gr_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_ses_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: ad5969d8-00f0-5508-b473-fa05254f5a4b
+		summarizeBy: none
+		sourceColumn: first_ses_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_vendor_invoice_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: cd5461d5-af3c-54c2-ac9a-c0429276fe6d
+		summarizeBy: none
+		sourceColumn: first_vendor_invoice_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_ir_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: dfb4ef16-c15a-5922-adde-6a7dd35994e8
+		summarizeBy: none
+		sourceColumn: first_ir_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_clear_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 581c99d1-8209-59d4-809d-a09a2fb0a34d
+		summarizeBy: none
+		sourceColumn: first_clear_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_clear_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 9fb991eb-41fd-57a9-8be1-68b1f7cf3f07
+		summarizeBy: none
+		sourceColumn: last_clear_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_goods_receipts
+		dataType: int64
+		formatString: 0
+		lineageTag: 68acadd1-49cb-5ef4-9a22-f5a148e7e04e
+		summarizeBy: sum
+		sourceColumn: n_goods_receipts
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_invoices
+		dataType: int64
+		formatString: 0
+		lineageTag: 63638f09-a538-555a-8c62-eed801082a32
+		summarizeBy: sum
+		sourceColumn: n_invoices
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_clearings
+		dataType: int64
+		formatString: 0
+		lineageTag: 12c6ec58-a037-5ab5-84cc-98f8552c7a27
+		summarizeBy: sum
+		sourceColumn: n_clearings
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_price_changes
+		dataType: int64
+		formatString: 0
+		lineageTag: e88dab36-6285-5e9f-bdd3-fe8e2e5f83ee
+		summarizeBy: sum
+		sourceColumn: n_price_changes
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_quantity_changes
+		dataType: int64
+		formatString: 0
+		lineageTag: 919b87b2-16a2-5bb3-8e96-ed459abeaf6b
+		summarizeBy: sum
+		sourceColumn: n_quantity_changes
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_payment_block_events
+		dataType: int64
+		formatString: 0
+		lineageTag: a858646b-8306-5144-bab7-09d3493953ba
+		summarizeBy: sum
+		sourceColumn: n_payment_block_events
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_reversals
+		dataType: int64
+		formatString: 0
+		lineageTag: b9601d74-a454-5bfe-ac16-f8fcc3269ba8
+		summarizeBy: sum
+		sourceColumn: n_reversals
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_delete_or_block
+		dataType: int64
+		formatString: 0
+		lineageTag: 4e81ec22-c07f-588d-9381-71d4f5e6bdc8
+		summarizeBy: sum
+		sourceColumn: n_delete_or_block
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_price_changes_after_invoice
+		dataType: int64
+		formatString: 0
+		lineageTag: ad344fac-b53a-51a6-99b0-4eb3f2956d53
+		summarizeBy: sum
+		sourceColumn: n_price_changes_after_invoice
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_quantity_changes_after_gr
+		dataType: int64
+		formatString: 0
+		lineageTag: a3cca862-9146-59ad-b55f-d56270efb13c
+		summarizeBy: sum
+		sourceColumn: n_quantity_changes_after_gr
+
+		annotation SummarizationSetBy = Automatic
+
+	column log_end_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 01abbefd-735a-5241-9a6d-bb2a1475e978
+		summarizeBy: none
+		sourceColumn: log_end_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column dev_invoice_before_gr
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: bf8b056c-078f-5222-870d-74ad8d5e5992
+		summarizeBy: none
+		sourceColumn: dev_invoice_before_gr
+
+		annotation SummarizationSetBy = Automatic
+
+	column dev_paid_before_gr
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: 69a1e20b-951a-5c8c-9a23-09e0a39accb6
+		summarizeBy: none
+		sourceColumn: dev_paid_before_gr
+
+		annotation SummarizationSetBy = Automatic
+
+	column dev_gr_on_two_way_item
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: 68c951b2-5ae8-5c0b-8be6-3277d8d75a63
+		summarizeBy: none
+		sourceColumn: dev_gr_on_two_way_item
+
+		annotation SummarizationSetBy = Automatic
+
+	column dev_invoice_on_consignment
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: 7b9a7c72-979f-5393-881c-6abfe97225b8
+		summarizeBy: none
+		sourceColumn: dev_invoice_on_consignment
+
+		annotation SummarizationSetBy = Automatic
+
+	column dev_po_after_invoice
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: bc20a1f2-e8c6-53d3-9644-cba243c0d099
+		summarizeBy: none
+		sourceColumn: dev_po_after_invoice
+
+		annotation SummarizationSetBy = Automatic
+
+	column dev_price_change_after_invoice
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: 9e4cd39f-1afd-5216-bf55-884318c2263a
+		summarizeBy: none
+		sourceColumn: dev_price_change_after_invoice
+
+		annotation SummarizationSetBy = Automatic
+
+	column dev_quantity_change_after_gr
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: a84be4aa-3ea0-57ca-bce8-a795284e754d
+		summarizeBy: none
+		sourceColumn: dev_quantity_change_after_gr
+
+		annotation SummarizationSetBy = Automatic
+
+	column dev_payment_block
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: fb6e4dd5-67f4-5415-9a74-2125b20a29e7
+		summarizeBy: none
+		sourceColumn: dev_payment_block
+
+		annotation SummarizationSetBy = Automatic
+
+	column dev_reversal
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: 6899dcf7-3a5c-5764-8c39-02df2b626b8f
+		summarizeBy: none
+		sourceColumn: dev_reversal
+
+		annotation SummarizationSetBy = Automatic
+
+	column case_end_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: d040c7a9-c2a0-53ca-b3d3-da52c2f2e3e1
+		summarizeBy: none
+		sourceColumn: case_end_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_deviation
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: d5c962f3-8c54-547d-8b4e-cf4869bad53d
+		summarizeBy: none
+		sourceColumn: has_deviation
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_deviation_types
+		dataType: int64
+		formatString: 0
+		lineageTag: f18acc64-4564-5744-9a3a-1d76050e6ace
+		summarizeBy: sum
+		sourceColumn: n_deviation_types
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_closed
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: b54ababb-8a0e-527b-9e13-d6b496d5a5de
+		summarizeBy: none
+		sourceColumn: is_closed
+
+		annotation SummarizationSetBy = Automatic
+
+	column cycle_days
+		dataType: double
+		formatString: #,0.00
+		lineageTag: b26a6eb7-fca5-559c-8d72-08b8e0e9d758
+		summarizeBy: sum
+		sourceColumn: cycle_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column e2e_cycle_days
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 98e58ee8-b788-5c26-a5d1-eea5e7bb97da
+		summarizeBy: sum
+		sourceColumn: e2e_cycle_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column invoice_to_clear_days
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 336dfae8-841f-5060-b1d1-afb6370f7bbe
+		summarizeBy: sum
+		sourceColumn: invoice_to_clear_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column po_to_gr_days
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 0cedfd8c-4903-5df9-94d6-a9ddc9f81a78
+		summarizeBy: sum
+		sourceColumn: po_to_gr_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column po_created_month
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		isHidden
+		lineageTag: 7f7f2710-aa8c-53e4-a9a7-c4d0a6b2c603
+		summarizeBy: none
+		sourceColumn: po_created_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_in_scope
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: 87ceea93-0302-5c8b-ab9a-468d44a8b163
+		summarizeBy: none
+		sourceColumn: is_in_scope
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_mature_cohort
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: 3ef733da-e413-53a8-b5be-b3ce0589f7cf
+		summarizeBy: none
+		sourceColumn: is_mature_cohort
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fct_po_item = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "fct_po_item.parquet"))
+				in
+				    Source
+

@@ -1,0 +1,31 @@
+relationship fdc32dbf-26a8-593f-ac27-66531a2e1d80
+	fromColumn: fct_po_item.vendor_id
+	toColumn: dim_vendor.vendor_id
+
+relationship 1bc3eac5-6592-5df3-883f-3ff15af9cee1
+	fromColumn: fct_po_item.material_group
+	toColumn: dim_material_group.material_group
+
+relationship 889d7942-84aa-5622-ad78-553198b674ef
+	fromColumn: fct_po_item.company_code
+	toColumn: dim_company_code.company_code
+
+relationship 7c68413f-6611-5f07-b7ba-eb2bec58b38b
+	fromColumn: fct_po_item.po_created_month
+	toColumn: dim_date.date_day
+
+relationship 544eefb6-d98c-5c9a-b3ef-1289384af184
+	fromColumn: fct_event.case_key
+	toColumn: fct_po_item.case_key
+
+relationship 15b8ff51-411e-5c07-b7a1-3673d084ba8c
+	fromColumn: fct_event.activity
+	toColumn: dim_activity.activity
+
+relationship 8e0aba58-e1b9-5c39-9a01-db1f79d08bd2
+	fromColumn: fct_event.user_name
+	toColumn: dim_user.user_name
+
+relationship 394bf9af-7a0f-527e-808f-aa84072489e3
+	fromColumn: early_warning_scores.case_key
+	toColumn: fct_po_item.case_key

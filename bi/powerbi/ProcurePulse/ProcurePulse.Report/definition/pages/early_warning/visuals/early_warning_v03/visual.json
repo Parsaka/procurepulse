@@ -1,0 +1,92 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "early_warning_v03",
+  "position": {
+    "x": 20,
+    "y": 160,
+    "z": 3000,
+    "width": 610,
+    "height": 540,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "early_warning_scores"
+                    }
+                  },
+                  "Property": "risk_decile"
+                }
+              },
+              "queryRef": "early_warning_scores.risk_decile",
+              "nativeQueryRef": "risk_decile"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measures"
+                    }
+                  },
+                  "Property": "Observed Rework Rate (Scored)"
+                }
+              },
+              "queryRef": "Measures.Observed Rework Rate (Scored)",
+              "nativeQueryRef": "Observed Rework Rate (Scored)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measures"
+                    }
+                  },
+                  "Property": "Average Risk Score"
+                }
+              },
+              "queryRef": "Measures.Average Risk Score",
+              "nativeQueryRef": "Average Risk Score"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Calibration: observed vs predicted by risk decile'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

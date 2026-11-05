@@ -1,0 +1,44 @@
+table dim_material_group
+	lineageTag: 5e8f050e-bf8e-5cda-be13-c442176b8363
+
+	column material_group
+		dataType: string
+		isHidden
+		lineageTag: 8ee2e3ca-d14e-586e-ae12-ff46678443a0
+		summarizeBy: none
+		sourceColumn: material_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column spend_area
+		dataType: string
+		lineageTag: 6306bd9b-4c50-5c61-ab0a-7d2d55e3a96d
+		summarizeBy: none
+		sourceColumn: spend_area
+
+		annotation SummarizationSetBy = Automatic
+
+	column sub_spend_area
+		dataType: string
+		lineageTag: 46168dd8-842e-5c23-921e-d6e7d5b1e64d
+		summarizeBy: none
+		sourceColumn: sub_spend_area
+
+		annotation SummarizationSetBy = Automatic
+
+	column spend_classification
+		dataType: string
+		lineageTag: e021f00f-4cbf-5b3e-b296-c18b4aed9b67
+		summarizeBy: none
+		sourceColumn: spend_classification
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_material_group = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "dim_material_group.parquet"))
+				in
+				    Source
+

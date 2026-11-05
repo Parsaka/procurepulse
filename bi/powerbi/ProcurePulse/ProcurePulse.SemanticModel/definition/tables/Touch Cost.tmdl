@@ -1,0 +1,20 @@
+table 'Touch Cost'
+	lineageTag: dd4c2503-cbff-50bf-ab7b-efe06576963e
+
+	column 'Touch Cost'
+		dataType: int64
+		formatString: €0
+		lineageTag: 7c7ec601-ecae-54f2-b625-b97ae469b9c2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+	partition 'Touch Cost' = calculated
+		mode: import
+		source = GENERATESERIES(5, 30, 1)
+

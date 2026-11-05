@@ -1,0 +1,62 @@
+table dim_activity
+	lineageTag: 606a1797-4e92-5099-a2be-df247c5db87c
+
+	column activity
+		dataType: string
+		isHidden
+		lineageTag: c8673875-46c6-5d51-b5bf-a1df32fde161
+		summarizeBy: none
+		sourceColumn: activity
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage
+		dataType: string
+		lineageTag: dbcb9895-1c0b-56be-b5e0-5bffbffb2dea
+		summarizeBy: none
+		sourceColumn: stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage_order
+		dataType: int64
+		formatString: 0
+		lineageTag: 309b874a-1451-5f1d-aeb6-c9934a9a449e
+		summarizeBy: none
+		sourceColumn: stage_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_rework
+		dataType: boolean
+		formatString: "TRUE";"TRUE";"FALSE"
+		lineageTag: c8198224-40b4-5778-a222-7ba9086886c7
+		summarizeBy: none
+		sourceColumn: is_rework
+
+		annotation SummarizationSetBy = Automatic
+
+	column sap_object
+		dataType: string
+		lineageTag: f1414ea4-a4d8-54a2-860c-7953552c8543
+		summarizeBy: none
+		sourceColumn: sap_object
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: bd1cd9ae-49e6-58dc-afad-a385a4f9ed36
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_activity = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "dim_activity.parquet"))
+				in
+				    Source
+
