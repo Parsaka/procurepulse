@@ -78,15 +78,15 @@ table KPIs
 		lineageTag: dd968b5c-d43d-5717-82f4-55ac77c238e5
 
 	measure 'Cost of Rework EUR per Year' = [Excess Touches per Year] * [Touch Cost Value]
-		formatString: €#,0
+		formatString: "€#,0.00,,"" M"""
 		lineageTag: 1aa497d8-1c81-58b1-a831-d31acc8b9cf4
 
 	measure 'Intervention Value EUR per Year' = CALCULATE ( SUM ( intervention_value[touches_saved_per_year] ), intervention_value[family] = "rework" ) * [Touch Cost Value]
-		formatString: €#,0
+		formatString: "€#,0.00,,"" M"""
 		lineageTag: b59849f9-678e-5279-9fb2-30ecfb76527c
 
 	measure 'Control Gap Exposure EUR per Year' = CALCULATE ( SUM ( intervention_value[exposed_value_eur_per_year] ), intervention_value[family] = "control" )
-		formatString: €#,0
+		formatString: "€#,0.00,,"" M"""
 		lineageTag: 21a0dacd-dd13-5c36-b440-175eec8597d3
 
 	measure 'Scored Items' = COUNTROWS ( early_warning_scores )

@@ -2,95 +2,36 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "answer_v06",
   "position": {
-    "x": 20,
-    "y": 320,
+    "x": 340,
+    "y": 215,
     "z": 6000,
-    "width": 760,
-    "height": 380,
+    "width": 920,
+    "height": 110,
     "tabOrder": 6000
   },
   "visual": {
-    "visualType": "clusteredBarChart",
-    "query": {
-      "queryState": {
-        "Category": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "intervention_value"
-                    }
-                  },
-                  "Property": "intervention"
-                }
-              },
-              "queryRef": "intervention_value.intervention",
-              "nativeQueryRef": "intervention"
-            }
-          ]
-        },
-        "Y": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "KPIs"
-                    }
-                  },
-                  "Property": "Intervention Value EUR per Year"
-                }
-              },
-              "queryRef": "KPIs.Intervention Value EUR per Year",
-              "nativeQueryRef": "Intervention Value EUR per Year"
-            }
-          ]
-        }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "KPIs"
-                  }
-                },
-                "Property": "Intervention Value EUR per Year"
-              }
-            },
-            "direction": "Descending"
-          }
-        ],
-        "isDefaultSort": true
-      }
-    },
-    "drillFilterOtherVisuals": true,
-    "visualContainerObjects": {
-      "title": [
+    "visualType": "textbox",
+    "objects": {
+      "general": [
         {
           "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "A manual touch is 10 to 20 minutes of a buyer or AP clerk: €5 / €15 / €30 = low / base / high case. Rework cost = excess touches per year × this rate. Control gaps are spend exposed to risk, not savings. Conformance is measured on closed items of the mature cohort, rework counts on the whole log.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#2b2a27"
+                    }
+                  }
+                ]
               }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Three interventions: value per year'"
-                }
-              }
-            }
+            ]
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   }
 }

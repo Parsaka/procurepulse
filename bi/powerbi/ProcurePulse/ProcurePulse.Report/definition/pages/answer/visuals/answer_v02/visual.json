@@ -63,7 +63,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Rework items (all POs)'"
+                  "Value": "'PO items with rework (whole log)'"
                 }
               }
             }

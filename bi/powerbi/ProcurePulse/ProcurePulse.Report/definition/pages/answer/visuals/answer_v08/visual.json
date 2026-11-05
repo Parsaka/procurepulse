@@ -1,0 +1,116 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "answer_v08",
+  "position": {
+    "x": 20,
+    "y": 660,
+    "z": 8000,
+    "width": 1240,
+    "height": 220,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "intervention_value"
+                    }
+                  },
+                  "Property": "intervention"
+                }
+              },
+              "queryRef": "intervention_value.intervention",
+              "nativeQueryRef": "intervention"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "intervention_value"
+                    }
+                  },
+                  "Property": "family"
+                }
+              },
+              "queryRef": "intervention_value.family",
+              "nativeQueryRef": "family"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "intervention_value"
+                    }
+                  },
+                  "Property": "owner"
+                }
+              },
+              "queryRef": "intervention_value.owner",
+              "nativeQueryRef": "owner"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "intervention_value"
+                    }
+                  },
+                  "Property": "deviations"
+                }
+              },
+              "queryRef": "intervention_value.deviations",
+              "nativeQueryRef": "deviations"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "intervention_value"
+                    }
+                  },
+                  "Property": "share_of_rework_effort"
+                }
+              },
+              "queryRef": "intervention_value.share_of_rework_effort",
+              "nativeQueryRef": "share_of_rework_effort"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Interventions, owners and the deviations they remove'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

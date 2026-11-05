@@ -107,7 +107,7 @@ table intervention_value
 
 	column share_of_rework_effort
 		dataType: double
-		formatString: #,0.00
+		formatString: 0.0%
 		lineageTag: 738accb6-4558-5c2b-89f7-f4c7d351a63d
 		summarizeBy: sum
 		sourceColumn: share_of_rework_effort

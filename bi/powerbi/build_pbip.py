@@ -61,6 +61,7 @@ REWORK = (
     "fct_po_item[dev_price_change_after_invoice] || fct_po_item[dev_quantity_change_after_gr]"
     " || fct_po_item[dev_payment_block] || fct_po_item[dev_reversal]"
 )
+EUR_M = '€#,0.00,," M"'  # €1.27 M: thousands separators scaled twice
 MEASURES: dict[str, tuple[str, str]] = {
     "PO Items": ("COUNTROWS ( fct_po_item )", "#,0"),
     "PO Value EUR": ("SUM ( fct_po_item[net_value_eur] )", "€#,0"),
@@ -105,15 +106,15 @@ MEASURES: dict[str, tuple[str, str]] = {
         'CALCULATE ( SUM ( intervention_value[touches_saved_per_year] ), intervention_value[family] = "rework" )',
         "#,0",
     ),
-    "Cost of Rework EUR per Year": ("[Excess Touches per Year] * [Touch Cost Value]", "€#,0"),
+    "Cost of Rework EUR per Year": ("[Excess Touches per Year] * [Touch Cost Value]", EUR_M),
     "Intervention Value EUR per Year": (
         'CALCULATE ( SUM ( intervention_value[touches_saved_per_year] ), intervention_value[family] = "rework" )'
         " * [Touch Cost Value]",
-        "€#,0",
+        EUR_M,
     ),
     "Control Gap Exposure EUR per Year": (
         'CALCULATE ( SUM ( intervention_value[exposed_value_eur_per_year] ), intervention_value[family] = "control" )',
-        "€#,0",
+        EUR_M,
     ),
     "Scored Items": ("COUNTROWS ( early_warning_scores )", "#,0"),
     "Observed Rework Rate (Scored)": ("AVERAGE ( early_warning_scores[label] )", "0.0%"),
@@ -180,6 +181,8 @@ def table_tmdl(name: str) -> str:
     lines = [f"table {q(name)}", f"\tlineageTag: {gid('t', name)}", ""]
     for field in schema:
         dtype, fmt, summ = tmdl_type(field.type)
+        if field.name.startswith("share_") or field.name.endswith("_rate"):
+            fmt = "0.0%"
         if field.name in ("risk_decile", "stage_order", "year", "month", "quarter", "rank_in_family", "event_seq"):
             summ = "none"
         lines.append(f"\tcolumn {q(field.name)}")
@@ -256,7 +259,7 @@ def touch_cost_tmdl() -> str:
                 "",
                 "\tpartition 'Touch Cost' = calculated",
                 "\t\tmode: import",
-                "\t\tsource = GENERATESERIES(5, 30, 1)",
+                "\t\tsource = {5, 15, 30}",
                 "",
             ]
         )
@@ -329,8 +332,8 @@ def title(text: str) -> dict:
 
 
 class Page:
-    def __init__(self, name: str, display: str):
-        self.name, self.display, self.visuals = name, display, []
+    def __init__(self, name: str, display: str, height: int = 720):
+        self.name, self.display, self.height, self.visuals = name, display, height, []
 
     def add(
         self,
@@ -385,6 +388,24 @@ class Page:
         )
 
 
+def slicer_default(entity: str, column: str, literal: str) -> dict:
+    """Single-select list slicer with a preselected value (PBIR stores the selection as a filter)."""
+    where = {
+        "Condition": {
+            "In": {
+                "Expressions": [{"Column": {"Expression": {"SourceRef": {"Source": "s"}}, "Property": column}}],
+                "Values": [[{"Literal": {"Value": literal}}]],
+            }
+        }
+    }
+    flt = {"Version": 2, "From": [{"Name": "s", "Entity": entity, "Type": 0}], "Where": [where]}
+    return {
+        "data": [{"properties": {"mode": lit("'Basic'")}}],
+        "selection": [{"properties": {"singleSelect": lit("true"), "strictSingleSelect": lit("true")}}],
+        "general": [{"properties": {"filter": {"filter": flt}}}],
+    }
+
+
 def card(p: Page, x: int, y: int, measure: str, heading: str) -> None:
     # Display units 1: the default "Auto" rounds €1.27 M to €1M
     labels = {"labels": [{"properties": {"labelDisplayUnits": lit("1D")}}]}
@@ -396,7 +417,7 @@ def desc(field: dict) -> dict:
 
 
 def pages() -> list[Page]:
-    a = Page("answer", "Answer")
+    a = Page("answer", "Answer", 900)
     a.text(
         20,
         10,
@@ -407,35 +428,55 @@ def pages() -> list[Page]:
         True,
     )
     card(a, 20, 70, "Conformance Rate (Mature Closed)", "Items without any deviation")
-    card(a, 330, 70, "Rework Items", "Rework items (all POs)")
+    card(a, 330, 70, "Rework Items", "PO items with rework (whole log)")
     card(a, 640, 70, "Cost of Rework EUR per Year", "Cost of rework per year")
     card(a, 950, 70, "Control Gap Exposure EUR per Year", "Control-gap spend exposed per year")
-    a.add("slicer", 20, 200, 400, 110, {"Values": [col("Touch Cost", "Touch Cost")]}, "Cost of one manual touch (€)")
+    a.add(
+        "slicer",
+        20,
+        205,
+        300,
+        125,
+        {"Values": [col("Touch Cost", "Touch Cost")]},
+        "Cost of one manual touch",
+        objects=slicer_default("Touch Cost", "Touch Cost", "15L"),
+    )
+    a.text(
+        340,
+        215,
+        920,
+        110,
+        "A manual touch is 10 to 20 minutes of a buyer or AP clerk: €5 / €15 / €30 = low / base / high case. "
+        "Rework cost = excess touches per year × this rate. Control gaps are spend exposed to risk, not savings. "
+        "Conformance is measured on closed items of the mature cohort, rework counts on the whole log.",
+        11,
+    )
     a.add(
         "clusteredBarChart",
         20,
-        320,
-        760,
-        380,
+        345,
+        1240,
+        300,
         {"Category": [col("intervention_value", "intervention")], "Y": [mea("Intervention Value EUR per Year")]},
-        "Three interventions: value per year",
+        "Three interventions recover all of the rework effort (value per year)",
         sort=desc(mea("Intervention Value EUR per Year")),
     )
     a.add(
         "tableEx",
-        800,
-        200,
-        460,
-        500,
+        20,
+        660,
+        1240,
+        220,
         {
             "Values": [
                 col("intervention_value", "intervention"),
                 col("intervention_value", "family"),
                 col("intervention_value", "owner"),
+                col("intervention_value", "deviations"),
                 col("intervention_value", "share_of_rework_effort"),
             ]
         },
-        "Interventions and owners",
+        "Interventions, owners and the deviations they remove",
     )
 
     pr = Page("process", "Process")
@@ -619,7 +660,7 @@ def report() -> None:
                     "name": "ProcurePulse.json",
                     "reportVersionAtImport": {"visual": "2.0.0", "report": "3.0.0", "page": "2.0.0"},
                     "type": "RegisteredResources",
-                }
+                },
             },
             "resourcePackages": [
                 {
@@ -647,7 +688,7 @@ def report() -> None:
                 "name": p.name,
                 "displayName": p.display,
                 "displayOption": "FitToPage",
-                "height": 720,
+                "height": p.height,
                 "width": 1280,
             },
         )
