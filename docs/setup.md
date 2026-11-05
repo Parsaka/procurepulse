@@ -54,13 +54,13 @@ forgotten warehouse cannot burn the trial.
 
 Locally instead: `export ANTHROPIC_API_KEY=...` then `make copilot-eval`.
 
-## 4. Power BI report (30 to 45 min, Windows)
+## 4. Power BI report (5 min, Windows)
 
-1. Install **Power BI Desktop** from the Microsoft Store (free).
-2. Get the data: GitHub → **Actions → ci →** latest green run on `main` → **Artifacts → powerbi-data**.
-   Unzip it to a folder, for example `C:\procurepulse\bi\`.
-3. Follow [bi/powerbi/README.md](../bi/powerbi/README.md): parameter `DataFolder` = that folder with a trailing
-   `\`, one query per table from `power_query.m`, the relationships table, then the measures from
-   `measures.dax` and the five pages.
-4. Check the cards against [findings.md](findings.md), save as `ProcurePulse.pbix`, and export one PNG per
+1. Install **Power BI Desktop** (free).
+2. Get the data: GitHub → **Actions → ci →** latest green run on `main` → **Artifacts → powerbi-data**, unzip
+   it to `<repo>\data\bi\`.
+3. `python bi/powerbi/build_pbip.py --data-folder <repo>\data\bi\` and open
+   `bi/powerbi/ProcurePulse/ProcurePulse.pbip`. Press **Refresh**.
+4. Check the cards against [findings.md](findings.md) (77.4% items without deviation, €1.27 M rework cost
+   at €15, €21.48 M control-gap exposure, lift 1.90), save as `ProcurePulse.pbix`, and export one PNG per
    page to `docs/img/powerbi_<page>.png`.
