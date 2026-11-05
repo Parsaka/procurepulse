@@ -6,7 +6,8 @@ and risk, what drives it, and which three interventions would recover the most o
 ProcurePulse answers that question on a **real SAP purchase-to-pay log** (BPI Challenge 2019: 1.6 M events,
 251,734 PO items, 1,975 vendors, 4 company codes) with the stack of a modern data team: an SAP table
 extract, dbt on DuckDB and Snowflake, process mining with PM4Py, causal-style effect estimation, a
-leak-free early-warning model, a Streamlit app, a Power BI model and an LLM copilot that can only read.
+leak-free early-warning model, a static dashboard and a Streamlit app, a Power BI report built as code and an
+LLM copilot that can only read.
 
 [![ci](https://github.com/Parsaka/procurepulse/actions/workflows/ci.yml/badge.svg)](https://github.com/Parsaka/procurepulse/actions/workflows/ci.yml)
 
@@ -40,7 +41,7 @@ flowchart LR
     F --> H[Cost of deviation<br/>OLS + CEM · RQ2/RQ5]
     F --> I[LightGBM early warning<br/>monthly refit · RQ3/RQ4]
     G & H & I --> J[(analytics schema)]
-    F & J --> K[Streamlit app]
+    F & J --> K[Static dashboard on GitHub Pages<br/>+ Streamlit app]
     F & J --> L[Power BI model]
     F & J --> M[Process Copilot<br/>read-only SQL tools]
     C -. COPY INTO .-> S[(Snowflake RAW)] -. same dbt project .-> T[(Snowflake MARTS)]
@@ -57,9 +58,9 @@ flowchart LR
 | Infrastructure | Terraform | Snowflake roles, warehouse and resource monitor as code | €0 |
 | Process mining | PM4Py | open-source, token replay and BPMN like Celonis concepts | €0 |
 | Statistics / ML | statsmodels, LightGBM, SHAP | effect sizes with confidence intervals; explainable risk scores | €0 |
-| App | Streamlit Community Cloud | public, always on, no server ([ADR 6](docs/adr/0006-free-hosting.md)) | €0 |
+| Demo | GitHub Pages (static) + Streamlit (local) | public, always on, no server ([ADR 6](docs/adr/0006-free-hosting.md)) | €0 |
 | BI | Power BI Desktop | the BI tool most German job ads name | €0 |
-| LLM | Claude API, read-only tools | natural-language questions with auditable SQL ([ADR 5](docs/adr/0005-copilot-read-only.md)) | cents per eval run |
+| LLM | Claude API, read-only tools | natural-language questions with auditable SQL ([ADR 5](docs/adr/0005-copilot-read-only.md)); SQL guard and agent loop unit-tested, 30-question eval ready but not run (needs a paid API key) | €0 until a key is added |
 | CI | GitHub Actions | rebuilds and checks every number on each push | €0 |
 
 ## Run it
@@ -99,7 +100,7 @@ docs/           findings, cost model, SAP data model (EN/DE), KPI definitions, A
 
 ## Documentation
 
-- [Setup guide](docs/setup.md): Streamlit, Snowflake, copilot eval, Power BI
+- [Setup guide](docs/setup.md): dashboard hosting, Snowflake, copilot eval, Power BI
 - [Findings](docs/findings.md): the answer, RQ by RQ, with limits
 - [Cost model](docs/cost_model.md)
 - [SAP data model (EN/DE)](docs/sap_data_model.md)

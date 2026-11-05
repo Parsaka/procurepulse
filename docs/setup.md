@@ -1,20 +1,18 @@
 # Setup guide: the four steps that need your accounts
 
 Everything else runs in CI. Each step below is independent; do them in any order.
-Total cost: €0 (Snowflake trial credits, free Streamlit and Power BI Desktop); the copilot eval is billed to
-your Anthropic API key, a few dollars per full run.
+Total cost: €0 (GitHub Pages, Snowflake trial credits, Power BI Desktop); the copilot eval is optional and billed
+to your Anthropic API key, a few dollars per full run.
 
-## 1. Public app on Streamlit Community Cloud (5 min)
+## 1. Public dashboard on GitHub Pages (2 min, once)
 
-1. Sign in at <https://share.streamlit.io> with GitHub.
-2. **Create app → Deploy a public app from GitHub**:
-   repository `Parsaka/procurepulse`, branch `main`, main file `app/streamlit_app.py`, App URL `procurepulse`.
-   Under **Advanced settings** pick Python **3.12**. Deploy.
-3. App menu **⋮ → Settings → Sharing**: *Who can view this app* = **This app is public and searchable**.
-4. Open the URL in a private browser window (not signed in). You should see six tabs. If you see
-   "You do not have access to this app", step 3 is not saved.
+1. Repository **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+2. The `pages` workflow then deploys <https://parsaka.github.io/procurepulse/> on every push to `main` that
+   touches `site/`, `app/data/` or `docs/img/`. Re-run it from **Actions → pages** if the first run failed
+   because Pages was still off.
 
-The app reads only `app/data/*.parquet`, so it needs no secrets and redeploys by itself on every push to `main`.
+The Streamlit app (`make app`) is the interactive local version of the same results. Streamlit Community
+Cloud was dropped as the public host ([ADR 6](adr/0006-free-hosting.md)).
 
 ## 2. Snowflake (20 min, free 30-day trial)
 
@@ -46,7 +44,7 @@ The app reads only `app/data/*.parquet`, so it needs no secrets and redeploys by
 The warehouse is XS, suspends after 60 seconds and sits under a 5-credit monthly resource monitor, so a
 forgotten warehouse cannot burn the trial.
 
-## 3. Process Copilot eval (5 min)
+## 3. Process Copilot eval (optional, 5 min)
 
 1. Create an API key at <https://console.anthropic.com> (Settings → API keys) and add credit if the account
    has none.
