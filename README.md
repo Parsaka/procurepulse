@@ -10,6 +10,9 @@ leak-free early-warning model, a Streamlit app, a Power BI model and an LLM copi
 
 [![ci](https://github.com/Parsaka/procurepulse/actions/workflows/ci.yml/badge.svg)](https://github.com/Parsaka/procurepulse/actions/workflows/ci.yml)
 
+**Live dashboard:** [parsaka.github.io/procurepulse](https://parsaka.github.io/procurepulse/), a static page
+built from the same exported results (`site/build.py`, deployed by `.github/workflows/pages.yml`).
+
 ## The answer
 
 | | |
