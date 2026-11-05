@@ -20,3 +20,4 @@ terraform.tfvars
 rsa_key*
 .streamlit/secrets.toml
 keys/
+/site/_out/
