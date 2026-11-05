@@ -439,7 +439,7 @@ def pages() -> list[Page]:
         20,
         205,
         300,
-        125,
+        160,
         {"Values": [col("Touch Cost", "Touch Cost")]},
         "Cost of one manual touch",
         objects=slicer_default("Touch Cost", "Touch Cost", "15L"),
@@ -457,9 +457,9 @@ def pages() -> list[Page]:
     a.add(
         "clusteredBarChart",
         20,
-        345,
+        380,
         1240,
-        300,
+        270,
         {"Category": [col("intervention_value", "intervention")], "Y": [mea("Intervention Value EUR per Year")]},
         "Three interventions recover all of the rework effort (value per year)",
         sort=desc(mea("Intervention Value EUR per Year")),
@@ -475,11 +475,10 @@ def pages() -> list[Page]:
                 col("intervention_value", "intervention"),
                 col("intervention_value", "family"),
                 col("intervention_value", "owner"),
-                col("intervention_value", "deviations"),
                 col("intervention_value", "share_of_rework_effort"),
             ]
         },
-        "Interventions, owners and the deviations they remove",
+        "Interventions and owners",
     )
 
     pr = Page("process", "Process")

@@ -3,10 +3,10 @@
   "name": "answer_v07",
   "position": {
     "x": 20,
-    "y": 345,
+    "y": 380,
     "z": 7000,
     "width": 1240,
-    "height": 300,
+    "height": 270,
     "tabOrder": 7000
   },
   "visual": {

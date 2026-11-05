@@ -65,20 +65,6 @@
                       "Entity": "intervention_value"
                     }
                   },
-                  "Property": "deviations"
-                }
-              },
-              "queryRef": "intervention_value.deviations",
-              "nativeQueryRef": "deviations"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "intervention_value"
-                    }
-                  },
                   "Property": "share_of_rework_effort"
                 }
               },
@@ -104,7 +90,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Interventions, owners and the deviations they remove'"
+                  "Value": "'Interventions and owners'"
                 }
               }
             }
