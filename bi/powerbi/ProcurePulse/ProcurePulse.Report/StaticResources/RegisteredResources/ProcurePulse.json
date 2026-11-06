@@ -1,0 +1,16 @@
+{
+  "name": "ProcurePulse",
+  "dataColors": [
+    "#2a78d6",
+    "#eb6834",
+    "#1baf7a",
+    "#eda100",
+    "#8a8984",
+    "#6a5acd",
+    "#c0392b",
+    "#16a085"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#2b2a27",
+  "tableAccent": "#2a78d6"
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "answer_v06",
+  "position": {
+    "x": 340,
+    "y": 215,
+    "z": 6000,
+    "width": 920,
+    "height": 110,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "A manual touch is 10 to 20 minutes of a buyer or AP clerk: €5 / €15 / €30 = low / base / high case. Rework cost = excess touches per year × this rate. Control gaps are spend exposed to risk, not savings. Conformance is measured on closed items of the mature cohort, rework counts on the whole log.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#2b2a27"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

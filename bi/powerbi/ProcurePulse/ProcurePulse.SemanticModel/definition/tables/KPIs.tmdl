@@ -1,0 +1,127 @@
+table KPIs
+	lineageTag: d9a1418f-ec4c-598e-ac88-223ae42a43b0
+
+	measure 'PO Items' = COUNTROWS ( fct_po_item )
+		formatString: #,0
+		lineageTag: 0a31aef2-62e9-5598-ad7e-fe7d759c603d
+
+	measure 'PO Value EUR' = SUM ( fct_po_item[net_value_eur] )
+		formatString: €#,0
+		lineageTag: be1c0083-564f-5cb9-88f8-49d094b414d2
+
+	measure 'Conformance Rate' = DIVIDE ( CALCULATE ( [PO Items], fct_po_item[has_deviation] = FALSE () ), [PO Items] )
+		formatString: 0.0%
+		lineageTag: 505bc921-32f8-54cb-867e-23df8f94ba90
+
+	measure 'Conformance Rate (Mature Closed)' = CALCULATE ( [Conformance Rate], fct_po_item[is_mature_cohort] = TRUE (), fct_po_item[is_closed] = TRUE () )
+		formatString: 0.0%
+		lineageTag: ffa76685-4c63-5e55-9343-e0d1e6fb1243
+
+	measure 'Deviating Value Share' = DIVIDE ( CALCULATE ( [PO Value EUR], fct_po_item[has_deviation] = TRUE () ), [PO Value EUR] )
+		formatString: 0.0%
+		lineageTag: 01376eb8-ae42-5470-a470-267b38d603dc
+
+	measure 'First Time Right Rate' = DIVIDE ( CALCULATE ( [PO Items], fct_po_item[n_manual_rework_touches] = 0 ), [PO Items] )
+		formatString: 0.0%
+		lineageTag: 5b94ad10-23a8-5eed-83e5-8497953876a8
+
+	measure 'Rework Items' = CALCULATE ( [PO Items], FILTER ( fct_po_item, fct_po_item[dev_price_change_after_invoice] || fct_po_item[dev_quantity_change_after_gr] || fct_po_item[dev_payment_block] || fct_po_item[dev_reversal] ) )
+		formatString: #,0
+		lineageTag: cd8940c0-8db6-58db-8da7-598bbcc4759b
+
+	measure 'Rework Rate' = DIVIDE ( [Rework Items], [PO Items] )
+		formatString: 0.0%
+		lineageTag: 62d37a45-76be-5136-98e4-af219227cf05
+
+	measure 'Rework Rate (Mature Closed)' = CALCULATE ( [Rework Rate], fct_po_item[is_mature_cohort] = TRUE (), fct_po_item[is_closed] = TRUE () )
+		formatString: 0.0%
+		lineageTag: 74bdc230-0052-5cdc-a804-2a317095fffb
+
+	measure 'PO After Invoice Rate' = DIVIDE ( CALCULATE ( [PO Items], fct_po_item[dev_po_after_invoice] = TRUE () ), [PO Items] )
+		formatString: 0.0%
+		lineageTag: fbd46a94-cd60-5cb0-8a39-43b83b727e5b
+
+	measure 'Payment Block Rate' = DIVIDE ( CALCULATE ( [PO Items], fct_po_item[dev_payment_block] = TRUE () ), [PO Items] )
+		formatString: 0.0%
+		lineageTag: 38b2038f-1ba1-5616-b035-58a0e52bbe8a
+
+	measure 'Manual Touches' = SUM ( fct_po_item[n_manual_touches] )
+		formatString: #,0
+		lineageTag: 44e36f00-4cb7-59b8-ada7-713cc702cf71
+
+	measure 'Manual Touches per Item' = DIVIDE ( [Manual Touches], [PO Items] )
+		formatString: 0.00
+		lineageTag: 9d850054-602a-5c05-b8d0-0753491a0200
+
+	measure 'Automation Rate' = DIVIDE ( SUM ( fct_po_item[n_batch_events] ), SUM ( fct_po_item[n_events] ) )
+		formatString: 0.0%
+		lineageTag: 678c5221-b0d4-50f2-80ea-fd3c3c5a297b
+
+	measure 'Median Cycle Days' = CALCULATE ( MEDIAN ( fct_po_item[cycle_days] ), fct_po_item[is_closed] = TRUE () )
+		formatString: 0.0
+		lineageTag: 5457ad92-b7fa-5644-9c24-639fc16b8c11
+
+	measure 'Median Invoice to Clear Days' = MEDIAN ( fct_po_item[invoice_to_clear_days] )
+		formatString: 0.0
+		lineageTag: baf6be98-9ee4-5bb9-ac48-e638a5f6ffd3
+
+	measure 'Closed Rate' = DIVIDE ( CALCULATE ( [PO Items], fct_po_item[is_closed] = TRUE () ), [PO Items] )
+		formatString: 0.0%
+		lineageTag: 5b32d5e7-6f6c-5769-a596-73b11ba950e2
+
+	measure 'Touch Cost Value' = SELECTEDVALUE ( 'Touch Cost'[Touch Cost], 15 )
+		formatString: €0
+		lineageTag: 1efc6ee9-f684-57b8-b47c-0093e090a6ba
+
+	measure 'Excess Touches per Year' = CALCULATE ( SUM ( intervention_value[touches_saved_per_year] ), intervention_value[family] = "rework" )
+		formatString: #,0
+		lineageTag: dd968b5c-d43d-5717-82f4-55ac77c238e5
+
+	measure 'Cost of Rework EUR per Year' = [Excess Touches per Year] * [Touch Cost Value]
+		formatString: €#,0
+		lineageTag: 1aa497d8-1c81-58b1-a831-d31acc8b9cf4
+
+	measure 'Intervention Value EUR per Year' = CALCULATE ( SUM ( intervention_value[touches_saved_per_year] ), intervention_value[family] = "rework" ) * [Touch Cost Value]
+		formatString: €#,0
+		lineageTag: b59849f9-678e-5279-9fb2-30ecfb76527c
+
+	measure 'Control Gap Exposure EUR per Year' = CALCULATE ( SUM ( intervention_value[exposed_value_eur_per_year] ), intervention_value[family] = "control" )
+		formatString: €#,0
+		lineageTag: 21a0dacd-dd13-5c36-b440-175eec8597d3
+
+	measure 'Scored Items' = COUNTROWS ( early_warning_scores )
+		formatString: #,0
+		lineageTag: 6b3997a7-f638-5fc7-978d-f151dd4f6018
+
+	measure 'Observed Rework Rate (Scored)' = AVERAGE ( early_warning_scores[label] )
+		formatString: 0.0%
+		lineageTag: d6c8a468-acdd-5cb0-a386-7b4cdf0c5060
+
+	measure 'Average Risk Score' = AVERAGE ( early_warning_scores[risk_score] )
+		formatString: 0.0%
+		lineageTag: acd73d70-fc76-5c5b-933b-34e19850e69a
+
+	measure 'Top Decile Lift' = DIVIDE ( CALCULATE ( AVERAGE ( early_warning_scores[label] ), early_warning_scores[risk_decile] = 10 ), CALCULATE ( AVERAGE ( early_warning_scores[label] ), REMOVEFILTERS ( early_warning_scores[risk_decile] ) ) )
+		formatString: "0.00""×"""
+		lineageTag: 1f89c487-1306-5816-a73c-07edbe4e54d4
+
+	measure 'Vendor Rank by Rework' = IF ( HASONEVALUE ( dim_vendor[vendor_id] ), RANKX ( ALL ( dim_vendor[vendor_id] ), [Rework Items], , DESC, DENSE ) )
+		formatString: 0
+		lineageTag: dc91e51d-544b-5aa5-b5a4-d013568ddf27
+
+	measure 'Share of Rework Items' = DIVIDE ( [Rework Items], CALCULATE ( [Rework Items], ALL ( dim_vendor ) ) )
+		formatString: 0.0%
+		lineageTag: 1370a6db-8dbb-5ecb-98d1-c73c70942364
+
+	column Value
+		dataType: string
+		isHidden
+		lineageTag: 1418e52a-37fd-5327-b94b-bf82e01e82f9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value]
+
+	partition KPIs = calculated
+		mode: import
+		source = {BLANK()}
+

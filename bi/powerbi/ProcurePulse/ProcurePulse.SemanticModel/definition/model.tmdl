@@ -1,0 +1,25 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+	annotation __PBI_TimeIntelligenceEnabled = 0
+
+ref table fct_po_item
+ref table fct_event
+ref table early_warning_scores
+ref table dim_vendor
+ref table dim_material_group
+ref table dim_company_code
+ref table dim_date
+ref table dim_activity
+ref table dim_user
+ref table deviation_effects
+ref table intervention_value
+ref table KPIs
+ref table 'Touch Cost'
+
+ref cultureInfo en-US

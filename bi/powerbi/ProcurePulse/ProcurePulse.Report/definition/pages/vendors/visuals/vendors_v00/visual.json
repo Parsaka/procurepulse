@@ -1,0 +1,162 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "vendors_v00",
+  "position": {
+    "x": 20,
+    "y": 20,
+    "z": 0,
+    "width": 700,
+    "height": 680,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_vendor"
+                    }
+                  },
+                  "Property": "vendor_id"
+                }
+              },
+              "queryRef": "dim_vendor.vendor_id",
+              "nativeQueryRef": "vendor_id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_vendor"
+                    }
+                  },
+                  "Property": "vendor_size_band"
+                }
+              },
+              "queryRef": "dim_vendor.vendor_size_band",
+              "nativeQueryRef": "vendor_size_band"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPIs"
+                    }
+                  },
+                  "Property": "PO Items"
+                }
+              },
+              "queryRef": "KPIs.PO Items",
+              "nativeQueryRef": "PO Items"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPIs"
+                    }
+                  },
+                  "Property": "Rework Items"
+                }
+              },
+              "queryRef": "KPIs.Rework Items",
+              "nativeQueryRef": "Rework Items"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPIs"
+                    }
+                  },
+                  "Property": "Rework Rate"
+                }
+              },
+              "queryRef": "KPIs.Rework Rate",
+              "nativeQueryRef": "Rework Rate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPIs"
+                    }
+                  },
+                  "Property": "Payment Block Rate"
+                }
+              },
+              "queryRef": "KPIs.Payment Block Rate",
+              "nativeQueryRef": "Payment Block Rate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPIs"
+                    }
+                  },
+                  "Property": "Share of Rework Items"
+                }
+              },
+              "queryRef": "KPIs.Share of Rework Items",
+              "nativeQueryRef": "Share of Rework Items"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "KPIs"
+                  }
+                },
+                "Property": "Rework Items"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Vendors by rework'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

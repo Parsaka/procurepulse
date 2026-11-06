@@ -1,0 +1,78 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "deviation_cost_v03",
+  "position": {
+    "x": 340,
+    "y": 420,
+    "z": 3000,
+    "width": 920,
+    "height": 290,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "deviation_effects"
+                    }
+                  },
+                  "Property": "deviation_label"
+                }
+              },
+              "queryRef": "deviation_effects.deviation_label",
+              "nativeQueryRef": "deviation_label"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "deviation_effects"
+                    }
+                  },
+                  "Property": "excess"
+                }
+              },
+              "queryRef": "deviation_effects.excess",
+              "nativeQueryRef": "excess"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Excess per item for the selected outcome'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

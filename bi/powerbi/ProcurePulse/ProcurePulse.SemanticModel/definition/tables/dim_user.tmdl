@@ -1,0 +1,46 @@
+table dim_user
+	lineageTag: 358aadf3-e800-5ef1-9dfe-96d338b3af43
+
+	column user_name
+		dataType: string
+		isHidden
+		lineageTag: e9bed369-9b25-5321-99f7-9fa3df26f185
+		summarizeBy: none
+		sourceColumn: user_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_type
+		dataType: string
+		lineageTag: 18986d4f-095a-52e6-9bb5-558e48fae7be
+		summarizeBy: none
+		sourceColumn: user_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column events
+		dataType: int64
+		formatString: 0
+		lineageTag: 6bb67f56-cfd6-5f10-abbc-1c7681569806
+		summarizeBy: sum
+		sourceColumn: events
+
+		annotation SummarizationSetBy = Automatic
+
+	column po_items
+		dataType: int64
+		formatString: 0
+		lineageTag: efda70b8-c85a-54f9-a3e2-3e78159780e3
+		summarizeBy: sum
+		sourceColumn: po_items
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_user = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "dim_user.parquet"))
+				in
+				    Source
+

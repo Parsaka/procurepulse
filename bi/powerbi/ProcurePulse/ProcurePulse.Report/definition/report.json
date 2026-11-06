@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.0.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "CY24SU10",
+      "reportVersionAtImport": {
+        "visual": "2.0.0",
+        "report": "3.0.0",
+        "page": "2.0.0"
+      },
+      "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "ProcurePulse.json",
+      "reportVersionAtImport": {
+        "visual": "2.0.0",
+        "report": "3.0.0",
+        "page": "2.0.0"
+      },
+      "type": "RegisteredResources"
+    }
+  },
+  "resourcePackages": [
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "ProcurePulse.json",
+          "path": "ProcurePulse.json",
+          "type": "CustomTheme"
+        }
+      ]
+    }
+  ]
+}

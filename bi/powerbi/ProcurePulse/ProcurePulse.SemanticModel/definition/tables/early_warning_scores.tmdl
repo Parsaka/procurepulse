@@ -1,0 +1,72 @@
+table early_warning_scores
+	lineageTag: 2e7a17fa-7918-5ff3-adcd-08877d32fbb4
+
+	column case_key
+		dataType: string
+		isHidden
+		lineageTag: cfd9b666-96ea-513e-a15f-2eabb9d2835c
+		summarizeBy: none
+		sourceColumn: case_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column po_created_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: 10af82ac-af38-53e8-8db7-7c6795895745
+		summarizeBy: none
+		sourceColumn: po_created_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column model_month
+		dataType: string
+		lineageTag: e3abbacc-a88c-506d-bab6-5215f0d11e94
+		summarizeBy: none
+		sourceColumn: model_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column risk_score
+		dataType: double
+		formatString: #,0.00
+		lineageTag: d37d36f2-55d5-5a3b-89f3-458468da70ce
+		summarizeBy: sum
+		sourceColumn: risk_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column risk_decile
+		dataType: int64
+		formatString: 0
+		lineageTag: 5e499f7b-f81a-534f-9197-baa41abc00c3
+		summarizeBy: none
+		sourceColumn: risk_decile
+
+		annotation SummarizationSetBy = Automatic
+
+	column top_reason
+		dataType: string
+		lineageTag: 4dd2de66-718f-5e31-b57b-3de90a896028
+		summarizeBy: none
+		sourceColumn: top_reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column label
+		dataType: int64
+		formatString: 0
+		lineageTag: b8a0f412-0d2b-5af6-a3ff-2fba9ccea16e
+		summarizeBy: sum
+		sourceColumn: label
+
+		annotation SummarizationSetBy = Automatic
+
+	partition early_warning_scores = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "early_warning_scores.parquet"))
+				in
+				    Source
+

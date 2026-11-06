@@ -1,0 +1,67 @@
+table dim_date
+	lineageTag: a7b2e306-efb0-535c-b3cb-e459ad1daf46
+	dataCategory: Time
+
+	column date_day
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		isKey
+		lineageTag: 27b07a42-a2d5-5ae3-b594-3e3efb875f16
+		summarizeBy: none
+		sourceColumn: date_day
+
+		annotation SummarizationSetBy = Automatic
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: c2da6ac2-d8d3-598b-b712-182725043e23
+		summarizeBy: none
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: int64
+		formatString: 0
+		lineageTag: 0809187f-9b90-5ad0-bc82-b432d581a77d
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 1fe66c89-74c6-57fe-825b-bf1f726595cf
+		summarizeBy: none
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_start
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 3a1657e4-8855-5e2d-a647-5a03025eb326
+		summarizeBy: none
+		sourceColumn: month_start
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_weekend
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6ec8bddd-e115-5c8e-8f54-dcef6c7a2386
+		summarizeBy: none
+		sourceColumn: is_weekend
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "dim_date.parquet"))
+				in
+				    Source
+

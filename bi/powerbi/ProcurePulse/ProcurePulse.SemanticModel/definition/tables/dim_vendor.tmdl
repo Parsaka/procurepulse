@@ -1,0 +1,70 @@
+table dim_vendor
+	lineageTag: 7d5759fa-7310-53f7-bebd-7e141a971bbd
+
+	column vendor_id
+		dataType: string
+		isHidden
+		lineageTag: a00e6c17-ce0f-551c-9354-8ca919e13b81
+		summarizeBy: none
+		sourceColumn: vendor_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column vendor_number
+		dataType: string
+		lineageTag: 526d2b7d-f822-501b-b7ec-3e2bbe2e405a
+		summarizeBy: none
+		sourceColumn: vendor_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column vendor_name
+		dataType: string
+		lineageTag: 969754cf-a225-5b15-8a54-0563e51e7658
+		summarizeBy: none
+		sourceColumn: vendor_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 04369f0e-3e0d-580f-9867-36f72f873748
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column po_items
+		dataType: int64
+		formatString: 0
+		lineageTag: b5f8c710-caeb-5032-beef-f8fb1eaebb28
+		summarizeBy: sum
+		sourceColumn: po_items
+
+		annotation SummarizationSetBy = Automatic
+
+	column spend_eur
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 04bfe7b1-e048-51e6-b034-37f6998117c6
+		summarizeBy: sum
+		sourceColumn: spend_eur
+
+		annotation SummarizationSetBy = Automatic
+
+	column vendor_size_band
+		dataType: string
+		lineageTag: 097b1c6a-20fb-55e1-9d66-b319a78bd5a1
+		summarizeBy: none
+		sourceColumn: vendor_size_band
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_vendor = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "dim_vendor.parquet"))
+				in
+				    Source
+

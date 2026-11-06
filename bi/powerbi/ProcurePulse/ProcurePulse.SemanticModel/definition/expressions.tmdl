@@ -1,0 +1,4 @@
+expression DataFolder = "C:\procurepulse\data\bi\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: fff4f297-a0b5-5624-8803-2ebf78844a27
+
+	annotation PBI_ResultType = Text

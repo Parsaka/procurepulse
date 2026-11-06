@@ -1,0 +1,108 @@
+table fct_event
+	lineageTag: cecc48e3-300e-5582-828e-be17ee3a3da8
+
+	column event_id
+		dataType: string
+		lineageTag: cc8a0b02-12ec-596e-924a-f29c78ff3780
+		summarizeBy: none
+		sourceColumn: event_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column case_key
+		dataType: string
+		isHidden
+		lineageTag: 193ee716-db0a-58e7-b1b0-b3a19243e523
+		summarizeBy: none
+		sourceColumn: case_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column activity
+		dataType: string
+		isHidden
+		lineageTag: 91ecb656-99ce-5ce2-811f-808af8097b15
+		summarizeBy: none
+		sourceColumn: activity
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_at
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn
+		lineageTag: ee24908e-5093-5725-8cf8-0af0f6fb7ba1
+		summarizeBy: none
+		sourceColumn: event_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: f97e1d33-8c3c-59ea-a510-e7ec87ec1a64
+		summarizeBy: none
+		sourceColumn: event_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_name
+		dataType: string
+		isHidden
+		lineageTag: 27377ae0-ca4b-519a-bdf2-9b59f5b115b3
+		summarizeBy: none
+		sourceColumn: user_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column actor_type
+		dataType: string
+		lineageTag: ebb9e1e5-e919-581a-b990-e12c75b71364
+		summarizeBy: none
+		sourceColumn: actor_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_manual_touch
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d9145623-efe4-58bb-89b1-af81c802fc99
+		summarizeBy: none
+		sourceColumn: is_manual_touch
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_rework
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ba11da01-6389-55c6-8d1e-d94e5c799a24
+		summarizeBy: none
+		sourceColumn: is_rework
+
+		annotation SummarizationSetBy = Automatic
+
+	column amount_eur
+		dataType: double
+		formatString: #,0.00
+		lineageTag: bdf271e7-9694-5313-91af-a4305ec6d5a6
+		summarizeBy: sum
+		sourceColumn: amount_eur
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_seq
+		dataType: int64
+		formatString: 0
+		lineageTag: 57d3b8c9-25dc-5771-9105-32c4082cbdef
+		summarizeBy: none
+		sourceColumn: event_seq
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fct_event = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "fct_event.parquet"))
+				in
+				    Source
+

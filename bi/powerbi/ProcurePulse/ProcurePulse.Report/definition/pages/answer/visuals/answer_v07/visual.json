@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "answer_v07",
+  "position": {
+    "x": 20,
+    "y": 380,
+    "z": 7000,
+    "width": 1240,
+    "height": 270,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "intervention_value"
+                    }
+                  },
+                  "Property": "intervention"
+                }
+              },
+              "queryRef": "intervention_value.intervention",
+              "nativeQueryRef": "intervention"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPIs"
+                    }
+                  },
+                  "Property": "Intervention Value EUR per Year"
+                }
+              },
+              "queryRef": "KPIs.Intervention Value EUR per Year",
+              "nativeQueryRef": "Intervention Value EUR per Year"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "KPIs"
+                  }
+                },
+                "Property": "Intervention Value EUR per Year"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Three interventions recover all of the rework effort (value per year)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

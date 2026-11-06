@@ -1,0 +1,158 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "deviation_cost_v01",
+  "position": {
+    "x": 20,
+    "y": 70,
+    "z": 1000,
+    "width": 1240,
+    "height": 330,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "deviation_effects"
+                    }
+                  },
+                  "Property": "deviation_label"
+                }
+              },
+              "queryRef": "deviation_effects.deviation_label",
+              "nativeQueryRef": "deviation_label"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "deviation_effects"
+                    }
+                  },
+                  "Property": "outcome"
+                }
+              },
+              "queryRef": "deviation_effects.outcome",
+              "nativeQueryRef": "outcome"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "deviation_effects"
+                    }
+                  },
+                  "Property": "excess"
+                }
+              },
+              "queryRef": "deviation_effects.excess",
+              "nativeQueryRef": "excess"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "deviation_effects"
+                    }
+                  },
+                  "Property": "ci_low"
+                }
+              },
+              "queryRef": "deviation_effects.ci_low",
+              "nativeQueryRef": "ci_low"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "deviation_effects"
+                    }
+                  },
+                  "Property": "ci_high"
+                }
+              },
+              "queryRef": "deviation_effects.ci_high",
+              "nativeQueryRef": "ci_high"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "deviation_effects"
+                    }
+                  },
+                  "Property": "p_value"
+                }
+              },
+              "queryRef": "deviation_effects.p_value",
+              "nativeQueryRef": "p_value"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "deviation_effects"
+                    }
+                  },
+                  "Property": "items_with_deviation"
+                }
+              },
+              "queryRef": "deviation_effects.items_with_deviation",
+              "nativeQueryRef": "items_with_deviation"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "deviation_effects"
+                    }
+                  },
+                  "Property": "cem_excess"
+                }
+              },
+              "queryRef": "deviation_effects.cem_excess",
+              "nativeQueryRef": "cem_excess"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Excess effect per deviation (both outcomes)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

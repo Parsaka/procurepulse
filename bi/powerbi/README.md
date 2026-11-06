@@ -1,8 +1,24 @@
 # Power BI report: "P2P Process Cockpit"
 
-Power BI Desktop is free (Windows). The repository ships everything the report needs except the binary
-`.pbix`, which you build once in about 30 minutes with this guide. The model and measures are code
-(`power_query.m`, `measures.dax`), so they are reviewable and match the dbt KPIs one to one.
+The report is code. `build_pbip.py` writes a Power BI Project (`ProcurePulse/ProcurePulse.pbip`): a TMDL
+semantic model (11 tables from `data/bi`, 8 relationships, 28 measures, a touch-cost parameter) and a PBIR
+report with five pages. Column types come from the Parquet schemas and the measures are the ones in
+`measures.dax`, so the report and the dbt KPIs cannot drift apart.
+
+```bash
+make bi                                            # or download the powerbi-data artifact from CI
+python bi/powerbi/build_pbip.py --data-folder C:\path\to\procurepulse\data\bi\
+```
+
+Open `ProcurePulse/ProcurePulse.pbip` in Power BI Desktop (free, Windows), press **Refresh**, then
+**File > Save as > Power BI file (*.pbix)**. The `.pbix` is a build output and is not committed.
+
+Notes: the measures table is called `KPIs` because Desktop rejects a table named `Measures`; `data/bi` holds
+in-scope items only (251,463 PO items, 1,587,802 events), so its counts are slightly below the full log in
+`docs/findings.md`; rework items on the Answer page count the whole log, the per-year figures in the README
+are annualised.
+
+The sections below describe the same model for building it by hand.
 
 ## 1. Data
 
