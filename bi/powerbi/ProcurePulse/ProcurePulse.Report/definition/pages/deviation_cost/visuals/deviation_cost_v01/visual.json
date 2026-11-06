@@ -146,7 +146,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Excess effect per deviation (both outcomes)'"
+                  "Value": "'Excess effect per deviation (selected outcome)'"
                 }
               }
             }

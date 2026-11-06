@@ -35,17 +35,17 @@
           "projections": [
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "deviation_effects"
+                      "Entity": "KPIs"
                     }
                   },
-                  "Property": "excess"
+                  "Property": "Excess per Item"
                 }
               },
-              "queryRef": "deviation_effects.excess",
-              "nativeQueryRef": "excess"
+              "queryRef": "KPIs.Excess per Item",
+              "nativeQueryRef": "Excess per Item"
             }
           ]
         }

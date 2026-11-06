@@ -113,6 +113,10 @@ table KPIs
 		formatString: 0.0%
 		lineageTag: 1370a6db-8dbb-5ecb-98d1-c73c70942364
 
+	measure 'Excess per Item' = IF ( HASONEVALUE ( deviation_effects[outcome] ), SUM ( deviation_effects[excess] ) )
+		formatString: 0.00
+		lineageTag: 8cafe468-c019-5c97-a0c0-0af67465dd2b
+
 	column Value
 		dataType: string
 		isHidden

@@ -133,6 +133,10 @@ MEASURES: dict[str, tuple[str, str]] = {
         "DIVIDE ( [Rework Items], CALCULATE ( [Rework Items], ALL ( dim_vendor ) ) )",
         "0.0%",
     ),
+    "Excess per Item": (
+        "IF ( HASONEVALUE ( deviation_effects[outcome] ), SUM ( deviation_effects[excess] ) )",
+        "0.00",
+    ),
 }
 
 
@@ -541,16 +545,25 @@ def pages() -> list[Page]:
         1240,
         330,
         {"Values": [col("deviation_effects", c) for c in cols]},
-        "Excess effect per deviation (both outcomes)",
+        "Excess effect per deviation (selected outcome)",
     )
-    dc.add("slicer", 20, 420, 300, 160, {"Values": [col("deviation_effects", "outcome")]}, "Outcome")
+    dc.add(
+        "slicer",
+        20,
+        420,
+        300,
+        160,
+        {"Values": [col("deviation_effects", "outcome")]},
+        "Outcome",
+        objects=slicer_default("deviation_effects", "outcome", "'n_manual_touches'"),
+    )
     dc.add(
         "clusteredBarChart",
         340,
         420,
         920,
         290,
-        {"Category": [col("deviation_effects", "deviation_label")], "Y": [col("deviation_effects", "excess")]},
+        {"Category": [col("deviation_effects", "deviation_label")], "Y": [mea("Excess per Item")]},
         "Excess per item for the selected outcome",
     )
 
