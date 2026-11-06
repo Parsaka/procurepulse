@@ -620,7 +620,7 @@ def pages() -> list[Page]:
         630,
         520,
         70,
-        "Pick vendor 0000100105 to see the drift: under 10% rework until June 2018, 67 to 93% from July. "
+        "Pick vendor 0000100105 to see the drift: under 10% rework until May 2018, 29% in June, 67 to 93% from July to November. "
         "The last months fall because recent POs had less time to show rework.",
         10,
     )
