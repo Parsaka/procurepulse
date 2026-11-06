@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "vendors_v03",
+  "position": {
+    "x": 740,
+    "y": 630,
+    "z": 3000,
+    "width": 520,
+    "height": 70,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Pick vendor 0000100105 to see the drift: under 10% rework until June 2018, 67 to 93% from July. The last months fall because recent POs had less time to show rework.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#2b2a27"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "process_v03",
+  "position": {
+    "x": 20,
+    "y": 660,
+    "z": 3000,
+    "width": 1240,
+    "height": 50,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "2-way match items are rare (157 in the mature cohort), so their monthly rate jumps. January 2019 is a partial month whose items have not finished; read it as incomplete.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#2b2a27"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

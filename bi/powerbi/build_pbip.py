@@ -504,7 +504,7 @@ def pages() -> list[Page]:
         20,
         370,
         610,
-        330,
+        280,
         {"Category": [col("dim_date", "month_start")], "Y": [mea("First Time Right Rate")]},
         "First-time-right rate by PO month",
     )
@@ -513,10 +513,19 @@ def pages() -> list[Page]:
         650,
         370,
         610,
-        330,
+        280,
         {"Category": [col("fct_po_item", "spend_area")], "Y": [mea("Payment Block Rate")]},
         "Payment block rate by spend area",
         sort=desc(mea("Payment Block Rate")),
+    )
+    pr.text(
+        20,
+        660,
+        1240,
+        50,
+        "2-way match items are rare (157 in the mature cohort), so their monthly rate jumps. "
+        "January 2019 is a partial month whose items have not finished; read it as incomplete.",
+        10,
     )
 
     dc = Page("deviation_cost", "Deviation cost")
@@ -577,7 +586,6 @@ def pages() -> list[Page]:
         {
             "Values": [
                 col("dim_vendor", "vendor_id"),
-                col("dim_vendor", "vendor_size_band"),
                 mea("PO Items"),
                 mea("Rework Items"),
                 mea("Rework Rate"),
@@ -588,15 +596,33 @@ def pages() -> list[Page]:
         "Vendors by rework",
         sort=desc(mea("Rework Items")),
     )
-    v.add("slicer", 740, 20, 520, 120, {"Values": [col("dim_vendor", "vendor_id")]}, "Vendor (control chart)")
+    v.add(
+        "slicer",
+        740,
+        20,
+        520,
+        90,
+        {"Values": [col("dim_vendor", "vendor_id")]},
+        "Vendor (control chart)",
+        objects={"data": [{"properties": {"mode": lit("'Dropdown'")}}]},
+    )
     v.add(
         "lineChart",
         740,
-        150,
+        120,
         520,
-        550,
+        500,
         {"Category": [col("dim_date", "month_start")], "Y": [mea("Rework Rate")]},
         "Rework rate by PO month",
+    )
+    v.text(
+        740,
+        630,
+        520,
+        70,
+        "Pick vendor 0000100105 to see the drift: under 10% rework until June 2018, 67 to 93% from July. "
+        "The last months fall because recent POs had less time to show rework.",
+        10,
     )
 
     ew = Page("early_warning", "Early warning")
