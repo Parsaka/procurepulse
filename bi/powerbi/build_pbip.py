@@ -415,7 +415,7 @@ def card(p: Page, x: int, y: int, measure: str, heading: str) -> None:
     props = {"labelDisplayUnits": lit("1D")}
     if MEASURES[measure][1] == EUR_M:
         props = {"labelDisplayUnits": lit("1000000D"), "labelPrecision": lit("2L")}
-    labels = {"labels": [{"properties": props}]}
+    labels = {"labels": [{"properties": props}], "categoryLabels": [{"properties": {"show": lit("false")}}]}
     p.add("card", x, y, 290, 120, {"Values": [mea(measure)]}, heading, objects=labels)
 
 
@@ -552,14 +552,14 @@ def pages() -> list[Page]:
         20,
         70,
         1240,
-        330,
+        200,
         {"Values": [col("deviation_effects", c) for c in cols]},
         "Excess effect per deviation (selected outcome)",
     )
     dc.add(
         "slicer",
         20,
-        420,
+        290,
         300,
         160,
         {"Values": [col("deviation_effects", "outcome")]},
@@ -569,9 +569,9 @@ def pages() -> list[Page]:
     dc.add(
         "clusteredBarChart",
         340,
-        420,
-        920,
         290,
+        920,
+        410,
         {"Category": [col("deviation_effects", "deviation_label")], "Y": [mea("Excess per Item")]},
         "Excess per item for the selected outcome",
     )
