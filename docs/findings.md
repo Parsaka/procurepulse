@@ -19,7 +19,7 @@ right (97.5% of items fit the reference model of their item category); what brea
 €15 per touch** (€0.42 M to €2.54 M for €5 to €30). It is concentrated: **5% of vendors cause 81% of rework
 items**. Three interventions recover nearly all of it: **clean price data and invoice tolerances (51%)**,
 **first-time-right goods receipt and invoice entry (40%)** and **ordering the right quantity (9%)**.
-Separately, two control gaps put **€21.4 M of spend a year** outside the purchase-order control, almost all
+Separately, two control gaps put **€21.5 M of spend a year** outside the purchase-order control, almost all
 of it POs raised after the invoice (€19.5 M). A model that scores each item when the PO is created flags a
 top-10% queue with **1.9× the average rework rate**, early enough for a buyer to check price and quantity
 before the order goes out.
