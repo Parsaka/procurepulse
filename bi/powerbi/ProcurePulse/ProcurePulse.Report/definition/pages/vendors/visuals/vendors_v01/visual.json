@@ -6,7 +6,7 @@
     "y": 20,
     "z": 1000,
     "width": 520,
-    "height": 120,
+    "height": 90,
     "tabOrder": 1000
   },
   "visual": {
@@ -34,6 +34,21 @@
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {

@@ -3,10 +3,10 @@
   "name": "vendors_v02",
   "position": {
     "x": 740,
-    "y": 150,
+    "y": 120,
     "z": 2000,
     "width": 520,
-    "height": 550,
+    "height": 500,
     "tabOrder": 2000
   },
   "visual": {

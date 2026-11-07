@@ -3,10 +3,10 @@
   "name": "deviation_cost_v03",
   "position": {
     "x": 340,
-    "y": 420,
+    "y": 290,
     "z": 3000,
     "width": 920,
-    "height": 290,
+    "height": 410,
     "tabOrder": 3000
   },
   "visual": {
@@ -35,17 +35,17 @@
           "projections": [
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "deviation_effects"
+                      "Entity": "KPIs"
                     }
                   },
-                  "Property": "excess"
+                  "Property": "Excess per Item"
                 }
               },
-              "queryRef": "deviation_effects.excess",
-              "nativeQueryRef": "excess"
+              "queryRef": "KPIs.Excess per Item",
+              "nativeQueryRef": "Excess per Item"
             }
           ]
         }

@@ -23,10 +23,17 @@ built from the same exported results (`site/build.py`, deployed by `.github/work
 | Cost of rework | **84,500 extra manual touches and 846,000 extra item-days a year ≈ €1.27 M** at €15/touch (€0.42 M to €2.54 M) |
 | What drives it | **5% of vendors cause 81% of rework**; the vendor's and buyer's track record carry 69% of the model signal |
 | Top 3 interventions | **Clean price data and invoice tolerances (51%)**, **first-time-right GR and invoice entry (40%)**, **order the right quantity (9%)** |
-| Control gaps (risk) | **€21.4 M spend a year** bypasses the PO control, €19.5 M of it POs raised after the invoice |
+| Control gaps (risk) | **€21.5 M spend a year** bypasses the PO control, €19.5 M of it POs raised after the invoice |
 | Early enough? | Scored at PO creation, the top-10% queue has **1.9× the average rework rate** (monthly refit, strict time split) |
 
 Full write-up with confidence intervals and limits: **[docs/findings.md](docs/findings.md)**.
+
+**Power BI report** (generated from code by [`bi/powerbi/build_pbip.py`](bi/powerbi/README.md), five pages):
+
+![Power BI: answer page](docs/img/powerbi_answer.png)
+
+[Process](docs/img/powerbi_process.png) · [Deviation cost](docs/img/powerbi_deviation_cost.png) ·
+[Vendors](docs/img/powerbi_vendors.png) · [Early warning](docs/img/powerbi_early_warning.png)
 
 ## Architecture
 

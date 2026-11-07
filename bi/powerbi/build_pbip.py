@@ -133,6 +133,10 @@ MEASURES: dict[str, tuple[str, str]] = {
         "DIVIDE ( [Rework Items], CALCULATE ( [Rework Items], ALL ( dim_vendor ) ) )",
         "0.0%",
     ),
+    "Excess per Item": (
+        "IF ( HASONEVALUE ( deviation_effects[outcome] ), SUM ( deviation_effects[excess] ) )",
+        "0.00",
+    ),
 }
 
 
@@ -411,7 +415,7 @@ def card(p: Page, x: int, y: int, measure: str, heading: str) -> None:
     props = {"labelDisplayUnits": lit("1D")}
     if MEASURES[measure][1] == EUR_M:
         props = {"labelDisplayUnits": lit("1000000D"), "labelPrecision": lit("2L")}
-    labels = {"labels": [{"properties": props}]}
+    labels = {"labels": [{"properties": props}], "categoryLabels": [{"properties": {"show": lit("false")}}]}
     p.add("card", x, y, 290, 120, {"Values": [mea(measure)]}, heading, objects=labels)
 
 
@@ -500,7 +504,7 @@ def pages() -> list[Page]:
         20,
         370,
         610,
-        330,
+        280,
         {"Category": [col("dim_date", "month_start")], "Y": [mea("First Time Right Rate")]},
         "First-time-right rate by PO month",
     )
@@ -509,10 +513,19 @@ def pages() -> list[Page]:
         650,
         370,
         610,
-        330,
+        280,
         {"Category": [col("fct_po_item", "spend_area")], "Y": [mea("Payment Block Rate")]},
         "Payment block rate by spend area",
         sort=desc(mea("Payment Block Rate")),
+    )
+    pr.text(
+        20,
+        660,
+        1240,
+        50,
+        "2-way match items are rare (157 in the mature cohort), so their monthly rate jumps. "
+        "January 2019 is a partial month whose items have not finished; read it as incomplete.",
+        10,
     )
 
     dc = Page("deviation_cost", "Deviation cost")
@@ -539,18 +552,27 @@ def pages() -> list[Page]:
         20,
         70,
         1240,
-        330,
+        200,
         {"Values": [col("deviation_effects", c) for c in cols]},
-        "Excess effect per deviation (both outcomes)",
+        "Excess effect per deviation (selected outcome)",
     )
-    dc.add("slicer", 20, 420, 300, 160, {"Values": [col("deviation_effects", "outcome")]}, "Outcome")
+    dc.add(
+        "slicer",
+        20,
+        290,
+        300,
+        160,
+        {"Values": [col("deviation_effects", "outcome")]},
+        "Outcome",
+        objects=slicer_default("deviation_effects", "outcome", "'n_manual_touches'"),
+    )
     dc.add(
         "clusteredBarChart",
         340,
-        420,
-        920,
         290,
-        {"Category": [col("deviation_effects", "deviation_label")], "Y": [col("deviation_effects", "excess")]},
+        920,
+        410,
+        {"Category": [col("deviation_effects", "deviation_label")], "Y": [mea("Excess per Item")]},
         "Excess per item for the selected outcome",
     )
 
@@ -564,7 +586,6 @@ def pages() -> list[Page]:
         {
             "Values": [
                 col("dim_vendor", "vendor_id"),
-                col("dim_vendor", "vendor_size_band"),
                 mea("PO Items"),
                 mea("Rework Items"),
                 mea("Rework Rate"),
@@ -575,15 +596,33 @@ def pages() -> list[Page]:
         "Vendors by rework",
         sort=desc(mea("Rework Items")),
     )
-    v.add("slicer", 740, 20, 520, 120, {"Values": [col("dim_vendor", "vendor_id")]}, "Vendor (control chart)")
+    v.add(
+        "slicer",
+        740,
+        20,
+        520,
+        90,
+        {"Values": [col("dim_vendor", "vendor_id")]},
+        "Vendor (control chart)",
+        objects={"data": [{"properties": {"mode": lit("'Dropdown'")}}]},
+    )
     v.add(
         "lineChart",
         740,
-        150,
+        120,
         520,
-        550,
+        500,
         {"Category": [col("dim_date", "month_start")], "Y": [mea("Rework Rate")]},
         "Rework rate by PO month",
+    )
+    v.text(
+        740,
+        630,
+        520,
+        70,
+        "Pick vendor 0000100105 to see the drift: under 10% rework until May 2018, 29% in June, 67 to 93% from July to November. "
+        "The last months fall because recent POs had less time to show rework.",
+        10,
     )
 
     ew = Page("early_warning", "Early warning")

@@ -6,7 +6,7 @@
     "y": 70,
     "z": 1000,
     "width": 1240,
-    "height": 330,
+    "height": 200,
     "tabOrder": 1000
   },
   "visual": {
@@ -146,7 +146,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Excess effect per deviation (both outcomes)'"
+                  "Value": "'Excess effect per deviation (selected outcome)'"
                 }
               }
             }

@@ -31,20 +31,6 @@
             },
             {
               "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "dim_vendor"
-                    }
-                  },
-                  "Property": "vendor_size_band"
-                }
-              },
-              "queryRef": "dim_vendor.vendor_size_band",
-              "nativeQueryRef": "vendor_size_band"
-            },
-            {
-              "field": {
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
