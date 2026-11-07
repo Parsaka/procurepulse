@@ -47,6 +47,13 @@ flowchart LR
     C -. COPY INTO .-> S[(Snowflake RAW)] -. same dbt project .-> T[(Snowflake MARTS)]
 ```
 
+**Snowflake run** ([workflow](.github/workflows/snowflake.yml), Nov 2026 trial, AWS Frankfurt): 18 SAP tables loaded
+into `RAW` with key-pair auth (row counts checked against the Parquet files), the same dbt project built and tested
+on Snowflake (76 of 76 nodes pass), and the Python results loaded into `ANALYTICS`. The marts match DuckDB exactly:
+1,595,923 events, 251,734 PO items, €996.8 M PO value, 77.43% conformance (mature, closed items), 52 monthly KPI rows.
+
+![Snowflake: PROCUREPULSE.MARTS built by dbt](docs/img/snowflake_marts.png)
+
 ## Stack and why each piece
 
 | Piece | Choice | Why | Cost |
