@@ -54,8 +54,8 @@ flowchart LR
     C -. COPY INTO .-> S[(Snowflake RAW)] -. same dbt project .-> T[(Snowflake MARTS)]
 ```
 
-**Snowflake run** ([workflow](.github/workflows/snowflake.yml), Nov 2026 trial, AWS Frankfurt): 18 SAP tables loaded
-into `RAW` with key-pair auth (row counts checked against the Parquet files), the same dbt project built and tested
+**Snowflake run** ([workflow](.github/workflows/snowflake.yml), Nov 2026 trial, AWS Frankfurt): 15 SAP tables plus 3 audit
+tables loaded into `RAW` with key-pair auth (row counts checked against the Parquet files), the same dbt project built and tested
 on Snowflake (76 of 76 nodes pass), and the Python results loaded into `ANALYTICS`. The marts match DuckDB exactly:
 1,595,923 events, 251,734 PO items, €996.8 M PO value, 77.43% conformance (mature, closed items), 52 monthly KPI rows.
 
@@ -73,7 +73,7 @@ on Snowflake (76 of 76 nodes pass), and the Python results loaded into `ANALYTIC
 | Process mining | PM4Py | open-source, token replay and BPMN like Celonis concepts | €0 |
 | Statistics / ML | statsmodels, LightGBM, SHAP | effect sizes with confidence intervals; explainable risk scores | €0 |
 | Demo | GitHub Pages (static) + Streamlit (local) | public, always on, no server ([ADR 6](docs/adr/0006-free-hosting.md)) | €0 |
-| BI | Power BI Desktop | the BI tool most German job ads name | €0 |
+| BI | Power BI Desktop, report as code (PBIP) | the BI tool most German job ads name; model and pages are generated and reviewable | €0 |
 | LLM | Claude API, read-only tools | natural-language questions with auditable SQL ([ADR 5](docs/adr/0005-copilot-read-only.md)); SQL guard and agent loop unit-tested, 30-question eval ready but not run (needs a paid API key) | €0 until a key is added |
 | CI | GitHub Actions | rebuilds and checks every number on each push | €0 |
 
@@ -90,7 +90,7 @@ make app                                # Streamlit on localhost:8501
 | Target | What it does |
 |---|---|
 | `make data` | raw log from the repository's `data` branch (published by the `fetch-data` workflow) |
-| `make extract` | 16 SAP tables in `data/landing/sap`, partitioned by load month |
+| `make extract` | 15 SAP tables (plus 3 audit tables) in `data/landing/sap`, partitioned by load month |
 | `make dbt` | 30 models and 45 data tests on DuckDB (incl. lossless reconstruction) |
 | `make analytics` / `make ml` | RQ1, RQ2, RQ5 / RQ3, RQ4 |
 | `make app-data` / `make bi` | aggregates for the app / star schema for Power BI |
@@ -105,7 +105,8 @@ dbt/            staging → intermediate (event log) → marts; macros for DuckD
 analytics/      conformance (PM4Py), cost of deviation, exports
 ml/             early-warning model
 app/            Streamlit app + its aggregated data
-bi/powerbi/     Power Query, DAX measures, build guide
+site/           static dashboard for GitHub Pages
+bi/powerbi/     Power BI project generator (TMDL model + PBIR report), DAX measures, Power Query
 copilot/        LLM copilot, read-only SQL guard, API, eval set
 infra/snowflake Terraform for database, schemas, warehouse, monitor, roles, service users
 loader/         Parquet → Snowflake loader (PUT + COPY INTO, key-pair auth)

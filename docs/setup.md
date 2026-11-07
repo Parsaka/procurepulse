@@ -36,7 +36,7 @@ Cloud was dropped as the public host ([ADR 6](adr/0006-free-hosting.md)).
    | `SNOWFLAKE_USER` | `PP_CI` |
    | `SNOWFLAKE_PRIVATE_KEY` | the whole content of `keys/pp_ci.p8`, including the BEGIN/END lines |
 
-5. GitHub → **Actions → snowflake → Run workflow**. It loads the 16 SAP tables into `RAW` (role `PP_LOADER`),
+5. GitHub → **Actions → snowflake → Run workflow**. It loads the 15 SAP tables and 3 audit tables into `RAW` (role `PP_LOADER`),
    runs `dbt build` on Snowflake (role `PP_TRANSFORMER`) and loads the Python results into `ANALYTICS`.
 6. Proof for the CV: in Snowsight run `SELECT COUNT(*) FROM PROCUREPULSE.MARTS.FCT_EVENT;`
    (1,595,923) and take a screenshot of the database tree and the query history.
