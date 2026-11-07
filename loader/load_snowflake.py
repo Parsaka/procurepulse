@@ -71,8 +71,18 @@ def load_table(cur, schema: str, table: str, files: list[Path]) -> int:
         INCLUDE_METADATA = ("_LOADED_FROM" = METADATA$FILENAME, "_LOADED_AT" = METADATA$START_SCAN_TIME)
         ON_ERROR = ABORT_STATEMENT
     """)
-    cur.execute(f'SELECT COUNT(*) FROM "{table}"')
-    return cur.fetchone()[0]
+    # Count from the COPY result itself: a COUNT(*) issued right after COPY has come back stale on
+    # a fresh trial account (0 rows for a table that held all 114,441 a moment later).
+    return rows_loaded(cur.description, cur.fetchall())
+
+
+def rows_loaded(description, result) -> int:
+    """Sum the rows_loaded column of a COPY INTO result (0 when no file was processed)."""
+    names = [d[0].lower() for d in description or []]
+    if "rows_loaded" not in names:
+        return 0
+    i = names.index("rows_loaded")
+    return sum(int(r[i] or 0) for r in result)
 
 
 def expected_rows(files: list[Path]) -> int:
